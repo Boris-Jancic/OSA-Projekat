@@ -5,8 +5,9 @@ import RegisterLayout from "./layouts/RegisterLayout";
 import HomeLayout from "./layouts/HomeLayout";
 import LoginLayout from "./layouts/LoginLayout";
 import BrowseLayout from "./layouts/BrowseLayout";
-import AddArticleLayout from "./layouts/AddArticleLayout";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import EditArticle from "./components/EditArticleComponent";
+import AddArticle from "./components/AddArticleComponent";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
               <Route path="/home" exact component={HomeLayout}/>
               <Route path="/register" exact component={RegisterLayout}/>
               <Route path="/login" exact component={LoginLayout}/>
-              <Route path="/addArticle" exact component={AddArticleLayout}/>
+              <Route path="/addArticle" exact component={AddArticle}/>
+              <Route path="/editArticle/:id" exact component={EditArticle}/>
               <Route path="/browse" exact component={BrowseLayout}/>
           </Switch>
         </Router>

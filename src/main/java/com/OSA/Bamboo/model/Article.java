@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -23,9 +23,16 @@ public class Article {
     @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "Price is required")
-    private double price;
+    @NotNull
+    private Double price;
 
-    @NotBlank(message = "Picture path is required")
-    private String picturePath;
+    @NotBlank(message = "Price is required")
+    private String imageName;
+
+    public Article(String name, String description, Double price, String imageName) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageName = imageName;
+    }
 }
