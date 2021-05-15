@@ -29,31 +29,29 @@ export default function EditArticle () {
     },[])
 
     function editArticle() {
-        console.log("sasasa");
-
         const name = document.getElementById("name").value
         const description = document.getElementById("description").value
         const price = document.getElementById("price").value
-        if (name !== "" && description !== "" && price !== "") {
+
+        if (name !== "")
             article.name = name
+        if (description !== "")
             article.description = description
+        if (price !== "")
             article.price = Number(price)
 
-            console.log(article)
-            fetch('http://localhost:8080/updateArticle', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(article),
-            })
-            history.push("../browse")
-            alert("Article updated successfully.")
-        } else {
-            alert("Make sure to fill out all the fields !")
-        }
+        console.log(article)
+        fetch('http://localhost:8080/updateArticle', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(article),
+        })
+        history.push("../browse")
+        alert("Article updated successfully.")
+
     }
-    console.log(article)
 
     return(
         <>

@@ -38,13 +38,13 @@ class Register extends Component {
             if (this.validateRegister(name, lastName, username, password, address, '', '')) {
                 let buyer = {
                     "username": username,
-                    "blocked": false,
                     "lastName": lastName,
                     "name": name,
                     "password": password,
-                    "address": address
+                    "address": address,
                 };
-                fetch('http://localhost:8080/buyerRegistration', {
+                console.log(buyer)
+                fetch('http://localhost:8080/buyer/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -72,9 +72,12 @@ class Register extends Component {
                     "password":password,
                     "address":address,
                     "email":email,
-                    "sellerName":sellerName
+                    "sellerName":sellerName,
+                    "id": 392183,
+                    "role": "SELLER"
                 };
-                fetch('http://localhost:8080/sellerRegistration', {
+                console.log(seller)
+                fetch('http://localhost:8080/seller/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
