@@ -8,6 +8,8 @@ import BrowseLayout from "./layouts/BrowseLayout";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EditArticle from "./components/EditArticleComponent";
 import AddArticle from "./components/AddArticleComponent";
+import {PrivateRoute} from "./components/PrivateRoute";
+import NotFound from "./layouts/NotFound";
 
 function App() {
   return (
@@ -18,9 +20,18 @@ function App() {
               <Route path="/home" exact component={HomeLayout}/>
               <Route path="/register" exact component={RegisterLayout}/>
               <Route path="/login" exact component={LoginLayout}/>
-              <Route path="/addArticle" exact component={AddArticle}/>
-              <Route path="/editArticle/:id" exact component={EditArticle}/>
+              <PrivateRoute
+                  path="/addArticle"
+                  exact
+                  component={AddArticle}
+                  roles={["ROLE_SELLER"]}/>
+              <PrivateRoute
+                  path="/editArticle/:id"
+                  exact
+                  component={EditArticle}
+                  roles={["ROLE_SELLER"]}/>
               <Route path="/browse" exact component={BrowseLayout}/>
+              <Route component={NotFound} />
           </Switch>
         </Router>
       </div>
