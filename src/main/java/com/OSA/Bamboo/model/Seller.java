@@ -1,25 +1,38 @@
 package com.OSA.Bamboo.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 import java.time.LocalDate;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Seller extends User {
+public class Seller {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "seller_id", unique = true, nullable = false)
+    private Long id;
+
+    @Column(nullable = false)
     private LocalDate sellingSince;
 
-    @NotBlank(message = "Email is mandatory")
+    @Column(nullable = false)
     private String email;
 
-    @NotBlank(message = "Address is mandatory")
+    @Column(nullable = false)
     private String address;
 
-    @NotBlank(message = "Name is mandatory")
+    @Column(nullable = false)
     private String sellerName;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
+    private User user;
 }

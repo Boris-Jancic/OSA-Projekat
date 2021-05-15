@@ -1,18 +1,23 @@
 package com.OSA.Bamboo.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Buyer extends User {
+public class Buyer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "buyer_id", unique = true, nullable = false)
+    private Long id;
 
-    @NotBlank(message = "Address is mandatory")
-    @Column(length = 64)
     private String address;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
+    private User user;
 }
