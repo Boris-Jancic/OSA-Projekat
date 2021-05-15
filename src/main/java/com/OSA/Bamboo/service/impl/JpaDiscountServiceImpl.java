@@ -4,5 +4,5 @@ import com.OSA.Bamboo.service.DiscountService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DiscountServiceImpl implements DiscountService {
+public class JpaDiscountServiceImpl implements DiscountService {
 }
