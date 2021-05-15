@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dao.ArticleDao;
 import com.OSA.Bamboo.model.Article;
+import com.OSA.Bamboo.repository.ArticleRepo;
 import com.OSA.Bamboo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,30 +13,30 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleRepo articleRepo;
 
     @Override
     public boolean addArticle(Article article) {
         boolean valid = checkValid(article);
-        if (valid) { articleDao.addArticle(article); }
+        if (valid) { articleRepo.save(article); }
         return valid;
     }
 
     @Override
     public boolean updateArticle(Article article) {
         boolean valid = checkValid(article);
-        if (valid) { articleDao.updateArticle(article); }
+        if (valid) { articleRepo.save(article); }
         return valid;
     }
 
     @Override
-    public List<Article> getAll() { return articleDao.getAll(); }
+    public List<Article> getAll() { return articleRepo.findAll(); }
 
     @Override
-    public Optional<Article> getArticleById(Long id) { return articleDao.getArticleById(id); }
+    public Optional<Article> getArticleById(Long id) { return articleRepo.findById(id); }
 
     @Override
-    public void deleteArticle(Long id) { articleDao.deleteArticle(id); }
+    public void deleteArticle(Long id) { articleRepo.deleteById(id); }
 
     private boolean checkValid(Article article) {
         boolean valid = true;

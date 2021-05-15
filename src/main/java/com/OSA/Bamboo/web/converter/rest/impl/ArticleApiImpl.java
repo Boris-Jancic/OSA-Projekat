@@ -49,7 +49,7 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Override
     public ResponseEntity getArticle(Long id) {
-        return new ResponseEntity(articleService.getArticleById(id), HttpStatus.OK);
+        return new ResponseEntity(articleService.one(id), HttpStatus.OK);
     }
 
     @Override
