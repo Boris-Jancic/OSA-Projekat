@@ -2,6 +2,7 @@ package com.OSA.Bamboo.web.rest.impl;
 
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.service.impl.JpaArticleService;
+import com.OSA.Bamboo.web.converter.ArticleDtoToArticle;
 import com.OSA.Bamboo.web.converter.converter.ArticleToArticleDto;
 import com.OSA.Bamboo.web.rest.ArticleApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +28,22 @@ public class ArticleApiImpl implements ArticleApi {
 
     @Autowired
     private ArticleToArticleDto toDto;
+    @Autowired
+    private ArticleDtoToArticle toEntity;
 
     @Override
-    public ResponseEntity<?> addArticle(MultipartFile file, Long id, String name, String description, String price, String imageName) {
+    public ResponseEntity<?> addArticle(MultipartFile file, String name, String description, String price) {
 
         makeDirectoryIfNotExist(imageDirectory);
-        Path fileNamePath = Paths.get(imageDirectory, imageName);
-        Article article = new Article(id, name, description, Double.parseDouble(price), imageName);
+        Path fileNamePath = Paths.get(imageDirectory, file.getName());
+        Article article = new Article(name, description, Double.parseDouble(price), file.getName());
+
         try {
+            assert article != null;
             articleService.save(this.toDto.convert(article));
             Files.write(fileNamePath, file.getBytes());
 
-            return new ResponseEntity<>(name, HttpStatus.CREATED);
+            return new ResponseEntity<>(article, HttpStatus.CREATED);
         } catch (IOException ex) {
             return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
         }

@@ -1,4 +1,4 @@
-package com.OSA.Bamboo.web.converter.rest;
+package com.OSA.Bamboo.web.rest;
 
 import com.OSA.Bamboo.dto.AuthDto;
 import com.OSA.Bamboo.dto.BuyerDto;
@@ -21,10 +21,6 @@ public interface UserApi {
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Seller> registerSeller(@Valid @RequestBody SellerDto dto);
 
-    @GetMapping(value = "/test",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<String> test();
-
     @PostMapping(value = "/buyer/register",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Buyer> registerBuyer(@Valid @RequestBody BuyerDto dto);
@@ -36,17 +32,19 @@ public interface UserApi {
 
     @GetMapping(value = "/user/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getUser(@PathVariable("username") String username);
+    ResponseEntity<User> getUser(@PathVariable("username") String username);
+
+    @GetMapping(value = "/users",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<User> getUsers();
 
     @PutMapping(value = "/user/changePass/{username}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Void> changePassword(@PathVariable("username") String username,
-                                        @RequestBody UserPasswordChangeDto reqBody);
+    ResponseEntity<Void> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
 
-    @PutMapping(value = "/user/{username}",
+    @PutMapping(value = "/user/edit",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<User> updateUser(@Valid @RequestBody User user,
-                                    @PathVariable("username") String username);
+    ResponseEntity<User> updateUser(@Valid @RequestBody User user);
 }

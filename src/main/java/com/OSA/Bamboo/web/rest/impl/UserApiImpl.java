@@ -15,7 +15,7 @@ import com.OSA.Bamboo.security.TokenUtils;
 import com.OSA.Bamboo.service.UserService;
 import com.OSA.Bamboo.web.converter.BuyerDtoToBuyer;
 import com.OSA.Bamboo.web.converter.SellerDtoToSeller;
-import com.OSA.Bamboo.web.converter.rest.UserApi;
+import com.OSA.Bamboo.web.rest.UserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -62,13 +64,17 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private TokenUtils tokenUtils;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public ResponseEntity registerSeller(@Valid SellerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Seller seller = this.sellerToEntity.convert(dto);
-            assert seller != null;
+            seller.getUser().setRole(UserRole.SELLER);
+            seller.getUser().setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
             userRepo.save(seller.getUser());
             sellerRepo.save(seller);
             return new ResponseEntity<>(seller, HttpStatus.OK);
@@ -78,19 +84,12 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public ResponseEntity<String> test() {
-        String a = "AAAAA";
-        System.out.println(userRepo.findByUsername("bong").getRole());
-        System.out.println(userRepo.findByUsername("andj").getPassword());
-        return new ResponseEntity<String>(a, HttpStatus.OK);
-    }
-
-    @Override
     public ResponseEntity<Buyer> registerBuyer(@Valid BuyerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Buyer buyer = this.buyerToEntity.convert(dto);
-            assert buyer != null;
+            buyer.getUser().setRole(UserRole.BUYER);
+            buyer.getUser().setPassword(passwordEncoder.encode(buyer.getUser().getPassword()));
             userRepo.save(buyer.getUser());
             buyerRepo.save(buyer);
             return new ResponseEntity<>(buyer, HttpStatus.OK);
@@ -101,17 +100,20 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public ResponseEntity<String> login(@RequestBody AuthDto dto) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
-        System.out.println(authenticationToken);
-        Authentication authentication = this.authenticationManager.authenticate(authenticationToken); // ovde puca token
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User user = userRepo.findByUsername(dto.getUsername());
+        if (!user.isBlocked()) {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+            Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        try {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(dto.getUsername());
-            return ResponseEntity.ok(this.tokenUtils.generateToken(userDetails));
-        } catch (Exception var5) {
-            System.out.println(var5);
-            return ResponseEntity.notFound().build();
+            try {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(dto.getUsername());
+                return ResponseEntity.ok(this.tokenUtils.generateToken(userDetails));
+            } catch (Exception var5) {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
@@ -124,13 +126,19 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public ResponseEntity changePassword(String username, UserPasswordChangeDto reqBody) {
-        if (!reqBody.getPassword().equals(reqBody.getPasswordConfirm())) {
+    public ResponseEntity getUsers() {
+        List<User> users = userRepo.getAllUsersExeptAdmins();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> changePassword(UserPasswordChangeDto dto) {
+        if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             boolean result;
             try {
-                result = this.userService.changePassword(username, reqBody);
+                result = this.userService.changePassword(dto);
             } catch (EntityNotFoundException var5) {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
@@ -140,28 +148,12 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> updateUser(@Valid User user, String username) {
-        User updatedUser = userRepo.findByUsername(username);
-
-        if (updatedUser != null) {
-            updatedUser.setUsername(user.getUsername());
-            updatedUser.setName(user.getName());
-            updatedUser.setLastName(user.getLastName());
-            updatedUser.setBlocked(user.isBlocked());
-
-            if (updatedUser.getRole().equals(UserRole.BUYER)) {
-//                Buyer buyer = buyerRepo.findByUserId(updatedUser.getId());
-//                buyer.setAddress(updatedUser.);
-//                ((Buyer) updatedUser).setAddress(((Buyer) updatedUser).getAddress());
-            }
-
-            if(updatedUser.getRole().equals(UserRole.SELLER) && updatedUser.getClass().equals(Seller.class)){
-//                ((Seller) updatedUser).setSellerName(((Seller) user).getSellerName());
-//                ((Seller) updatedUser).setEmail(((Seller) user).getEmail());
-//                ((Seller) updatedUser).setAddress(((Seller) updatedUser).getAddress());
-            }
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@Valid User user) {
+        if (user != null) {
+            System.out.println(user);
+            userRepo.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
-        return new ResponseEntity<>(updatedUser, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }
