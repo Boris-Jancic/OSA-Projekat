@@ -3,10 +3,10 @@ import { TokenService } from "../TokenService";
 import { AuthenticationService } from "./AuthenticationService";
 
 // API klijent se kreira ka specifičnom endpoint-u, uz sve ono što je uvek neophodno slati
-const SprintsAxiosClient = axios.create();
+const AxiosClient = axios.create();
 
 // Dodaj token na svaki zahtev ka Article backendu, ako je korisnik ulogovan
-SprintsAxiosClient.interceptors.request.use(function success(config) {
+AxiosClient.interceptors.request.use(function success(config) {
     const token = TokenService.getToken();
     if (token) {
         if (TokenService.didTokenExpire()) {
@@ -19,8 +19,8 @@ SprintsAxiosClient.interceptors.request.use(function success(config) {
     return config;
 });
 
-// U slučaju da se sa Sprints backenda vrati forbidden, token je istekao te izloguj korisnika
-SprintsAxiosClient.interceptors.response.use(
+// U slučaju da se sa Article backenda vrati forbidden, token je istekao te izloguj korisnika
+AxiosClient.interceptors.response.use(
     function success(response) {
         return response;
     },
@@ -35,4 +35,4 @@ SprintsAxiosClient.interceptors.response.use(
     }
 );
 
-export default SprintsAxiosClient;
+export default AxiosClient;

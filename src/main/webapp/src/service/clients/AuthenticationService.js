@@ -17,7 +17,7 @@ async function login(userCredentials) {
         const decoded_token = TokenService.decodeToken(response.data);
         if (decoded_token) {
             TokenService.setToken(response.data);
-            window.location.assign("/");
+            window.location.assign("/browse");
         } else {
             console.error("Invalid token");
         }
@@ -28,7 +28,7 @@ async function login(userCredentials) {
 
 function logout() {
     TokenService.removeToken();
-    window.location.assign("/");
+    window.location.assign("/login");
 }
 
 function getRole() {
