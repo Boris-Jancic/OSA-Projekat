@@ -17,5 +17,5 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    boolean changePassword(String username, UserPasswordChangeDto userPasswordChangeDto);
+    boolean changePassword(UserPasswordChangeDto userPasswordChangeDto);
 }

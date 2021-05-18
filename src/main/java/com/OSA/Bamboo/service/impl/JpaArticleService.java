@@ -26,7 +26,7 @@ public class JpaArticleService implements ArticleService {
     public Article save(ArticleDto articleDto) {
         Article article = this.toEntity.convert(articleDto);
 
-        if (articleDto.getId() != null) {
+        if (article != null) {
             this.articleRepo.save(article);
         }
 

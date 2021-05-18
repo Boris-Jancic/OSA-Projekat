@@ -54,18 +54,26 @@ public class JpaUserService implements UserService {
     }
 
     @Override
-    public boolean changePassword(String username, UserPasswordChangeDto userPasswordChangeDto) {
-        Optional<User> result = Optional.ofNullable(this.userRepo.findByUsername(username));
+    public boolean changePassword(UserPasswordChangeDto userPasswordChangeDto) {
+        Optional<User> result = Optional.ofNullable(userRepo.findByUsername(userPasswordChangeDto.getUsername()));
         if (!result.isPresent()) {
             throw new EntityNotFoundException();
         } else {
             User user = (User)result.get();
-            if (user.getUsername().equals(userPasswordChangeDto.getUsername()) && user.getPassword().equals(userPasswordChangeDto.getPassword())) {
+            System.out.println(user.getPassword());
+            System.out.println(passwordEncoder.encode(userPasswordChangeDto.getOldPassword()));
+            System.out.println(passwordEncoder.encode(userPasswordChangeDto.getPassword()));
+            System.out.println(userPasswordChangeDto.getOldPassword());
+            System.out.println(userPasswordChangeDto.getPassword());
+            System.out.println(userPasswordChangeDto);
+
+            if (user.getPassword().equals(passwordEncoder.encode(userPasswordChangeDto.getPassword()))) {
+                System.out.println("doslo");
                 String password = userPasswordChangeDto.getPassword();
                 if (!userPasswordChangeDto.getPassword().equals("")) {
                     password = this.passwordEncoder.encode(userPasswordChangeDto.getPassword());
+                    System.out.println("doslo");
                 }
-
                 user.setPassword(password);
                 this.userRepo.save(user);
                 return true;
