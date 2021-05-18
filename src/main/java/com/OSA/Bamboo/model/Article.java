@@ -24,8 +24,7 @@ public class Article {
 
     private String imageName;
 
-    public Article(Long id, String name, String description, double price, String imageName) {
-        this.id = id;
+    public Article(String name, String description, double price, String imageName) {
         this.name = name;
         this.description = description;
         this.price = price;
