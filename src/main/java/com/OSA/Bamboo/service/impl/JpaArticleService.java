@@ -1,6 +1,5 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.repository.ArticleRepo;
 import com.OSA.Bamboo.service.ArticleService;
@@ -23,13 +22,10 @@ public class JpaArticleService implements ArticleService {
     public List<Article> getAll() { return articleRepo.findAll(); }
 
     @Override
-    public Article save(ArticleDto articleDto) {
-        Article article = this.toEntity.convert(articleDto);
-
+    public Article save(Article article) {
         if (article != null) {
             this.articleRepo.save(article);
         }
-
         return article;
     }
 

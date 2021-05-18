@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 public class Article {
@@ -24,10 +22,13 @@ public class Article {
 
     private String imageName;
 
-    public Article(String name, String description, double price, String imageName) {
+    private Long sellerId;
+
+    public Article(String name, String description, double price, String imageName, Long sellerId) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageName = imageName;
+        this.sellerId = sellerId;
     }
 }
