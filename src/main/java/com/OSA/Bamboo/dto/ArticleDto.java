@@ -10,25 +10,17 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ArticleDto {
 
-    private Long id;
-
     @NotBlank(message = "Name is required")
     private String name;
 
     @NotBlank(message = "Description is required")
     private String description;
-
     @NotNull
     private Double price;
 
-    @NotBlank(message = "Img name is required")
-    private String imageName;
-
-    public ArticleDto(Long id, String name, String description, double price, String imageName) {
-        this.id = id;
+    public ArticleDto(String name, String description, double price) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.imageName = imageName;
     }
 }
