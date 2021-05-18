@@ -61,16 +61,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //detaljnije: https://www.baeldung.com/spring-security-cache-control-headers
         httpSecurity.headers().cacheControl().disable();
         //Neophodno da ne bi proveravali autentifikaciju kod Preflight zahteva
-        httpSecurity.cors();
+        httpSecurity.cors().disable();
         httpSecurity.csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/user/{username}").permitAll()
+                .antMatchers(HttpMethod.GET, "/users").permitAll()
                 .antMatchers(HttpMethod.POST,"/users/auth").permitAll()
-                .antMatchers(HttpMethod.GET, "/test").permitAll()
                 .antMatchers(HttpMethod.POST, "/buyer/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/seller/register").permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/edit").permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/changePass/{username}").permitAll()
                 .antMatchers(HttpMethod.GET,"/allArticles").permitAll()
                 .antMatchers(HttpMethod.GET,"/getArticle/{id}").permitAll()
                 .antMatchers(HttpMethod.POST,"/addArticle").permitAll()
