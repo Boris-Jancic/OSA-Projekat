@@ -14,6 +14,7 @@ export default function EditArticle () {
     })
     const [hasError, setError] = useState()
     const history = useHistory();
+    const divStyle = {height: 930, backgroundSize: 'cover'};
 
     const {id} = useParams();
 
@@ -29,48 +30,53 @@ export default function EditArticle () {
     },[])
 
     function editArticle() {
-        console.log("sasasa");
-
         const name = document.getElementById("name").value
         const description = document.getElementById("description").value
         const price = document.getElementById("price").value
-        if (name !== "" && description !== "" && price !== "") {
+
+        if (name !== "")
             article.name = name
+        if (description !== "")
             article.description = description
+        if (price !== "")
             article.price = Number(price)
 
-            console.log(article)
-            fetch('http://localhost:8080/updateArticle', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(article),
-            })
-            history.push("../browse")
-            alert("Article updated successfully.")
-        } else {
-            alert("Make sure to fill out all the fields !")
-        }
+        console.log(article)
+        fetch('http://localhost:8080/updateArticle', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(article),
+        })
+        history.push("../browse")
+        alert("Article updated successfully.")
+
     }
-    console.log(article)
+
+    const changeInputHandler = (event, prop) => {
+        const articleChanged = {...article};
+        articleChanged[prop] = event.target.value;
+        setArticle(articleChanged)
+    }
 
     return(
-        <>
+        <div style={divStyle}>
             <div className="form-size">
-                <h1>Edit article {article.name}</h1>
+                <h1>Edit article</h1>
                 <hr />
-                <TextField label="Name" id="name" type="text" placeholder={article.name}/>
-                <hr />
-                <TextField label="Description" id="description" type="text" placeholder={article.description}/>
-                <hr />
-                <TextField label="Price" id="price" type="number" placeholder={article.price}/>
+                <TextField label="Name" id="name" type="text" className="input-margin" value={article.name} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'name')}/>
+                <TextField label="Description" id="description" type="text" className="input-margin" value={article.description} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'description')}/>
+                <TextField label="Price" id="price" type="number" className="input-margin" value={article.price} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'price')}/>
                 <hr />
 
                 <Button size="large" color="inherit" onClick={editArticle}>
                     Submit
                 </Button>
             </div>
-        </>
+        </div>
     )
 }

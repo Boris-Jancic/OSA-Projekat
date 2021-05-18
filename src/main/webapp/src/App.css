@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  font-family: "Lucida Console", "Courier New", monospace;
+  background-image: url("static/images/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .App-logo {
@@ -22,6 +26,15 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.navbar-brand
+{
+  padding-top: 0;
+}
+.navbar-brand img
+{
+ max-height: 100%;
 }
 
 .App-link {
@@ -50,14 +63,23 @@
   margin-right: 2%;
 }
 
+.home-header {
+  text-align: left;
+  padding: 18% 5%;
+  font-family: "Yu Gothic UI Semibold";
+}
+
 .form-size {
   background-image: linear-gradient(45deg ,#12cc44, #f5ed7a);
-  margin: 1% 30%;
+  opacity: 0.97;
+  margin: 3% 30%;
   padding: 5% 10% 5% 10%;
+  border-radius: 25px;
+  border: 2px solid #73AD21;
 }
 
 .input-margin {
-  margin: 10px 10px 10px 10px;
+  margin-top: 10px !important;
 }
 
 .img-margin {
@@ -65,18 +87,13 @@
   max-width: 95%;
   height: 300px;
 }
-
-.input-margin-radio {
-  margin-right: 7%;
-}
-
 .btn {
   background-color: lightgoldenrodyellow !important;
   color: white;
 }
 
 .card-view {
-  margin-top: 5%;
+  margin-top: 1%;
   margin-bottom: 5%;
   padding-left: 20%;
   padding-right: 20%;

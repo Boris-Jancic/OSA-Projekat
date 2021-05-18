@@ -1,11 +1,8 @@
 package com.OSA.Bamboo.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -17,22 +14,21 @@ public class Article {
     @Column(length = 10)
     private Long id;
 
-    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Description is required")
     private String description;
 
-    @NotNull
     private Double price;
 
-    @NotBlank(message = "Price is required")
     private String imageName;
 
-    public Article(String name, String description, Double price, String imageName) {
+    private Long sellerId;
+
+    public Article(String name, String description, double price, String imageName, Long sellerId) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageName = imageName;
+        this.sellerId = sellerId;
     }
 }

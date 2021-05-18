@@ -1,32 +1,42 @@
 package com.OSA.Bamboo.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.OSA.Bamboo.model.enums.UserRole;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-@MappedSuperclass
-public abstract class User {
+@Entity
+public class User {
 
     @Id
-    @NotBlank(message = "Username is mandatory")
-    @Column(length = 10)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @NotBlank(message = "Password is mandatory")
+    @Column(unique = false, nullable = false)
     private String password;
 
-    @NotBlank(message = "Name is mandatory")
+    @Column(unique = false, nullable = false)
     private String name;
 
-    @NotBlank(message = "Last name is mandatory")
+    @Column(unique = false, nullable = false)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     private boolean blocked;
+
+    public User(String name, String lastName, String username, String password) {
+        this.name = name;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
 }
+

@@ -1,7 +1,9 @@
 package com.OSA.Bamboo.model;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +12,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Discount {
+public class   Discount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
