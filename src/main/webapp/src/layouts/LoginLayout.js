@@ -9,6 +9,7 @@ const LoginLayout = () => {
         username: "",
         password: "",
     });
+    const divStyle = {height: 930, backgroundSize: 'cover'};
 
     const handleFormInputChange = (name) => (event) => {
         const val = event.target.value;
@@ -24,25 +25,29 @@ const LoginLayout = () => {
     };
 
     return (
-        <div className="form-size">
-            <h1>Login</h1>
-            <hr />
-            <TextField label="Username"
-                       id="username"
-                       type="text"
-                       value={credentials.username}
-                       onChange={handleFormInputChange("username")}/>
-            <hr />
-            <TextField label="Password"
-                       id="description"
-                       type="password"
-                       value={credentials.password}
-                       onChange={handleFormInputChange("password")}/>
-            <hr />
+        <div  style={divStyle}>
+            <div className="form-size">
+                <h1>Login</h1>
 
-            <Button size="large" color="inherit" onClick={login}>
-                Submit
-            </Button>
+                <TextField label="Username"
+                           id="username"
+                           type="text"
+                           value={credentials.username}
+                           variant="outlined"
+                           className="input-margin"
+                           onChange={handleFormInputChange("username")}/>
+                <TextField label="Password"
+                           id="description"
+                           type="password"
+                           value={credentials.password}
+                           variant="outlined"
+                           className="input-margin"
+                           onChange={handleFormInputChange("password")}/>
+                <hr />
+                <Button size="large" color="inherit" onClick={login}>
+                    Submit
+                </Button>
+            </div>
         </div>
     );
 }
