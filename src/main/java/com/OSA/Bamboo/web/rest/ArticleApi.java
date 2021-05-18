@@ -16,7 +16,8 @@ public interface ArticleApi {
     ResponseEntity<?> addArticle(@RequestParam("imageFile")MultipartFile file,
                                         @RequestParam("name") String name,
                                         @RequestParam("description") String description,
-                                        @RequestParam("price") String price);
+                                        @RequestParam("price") String price,
+                                        @RequestParam("sellerId") Long sellerId);
 
     @GetMapping(value = "/allArticles",
             produces = {MediaType.APPLICATION_JSON_VALUE})

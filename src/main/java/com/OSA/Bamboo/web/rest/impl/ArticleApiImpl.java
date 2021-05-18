@@ -32,17 +32,24 @@ public class ArticleApiImpl implements ArticleApi {
     private ArticleDtoToArticle toEntity;
 
     @Override
-    public ResponseEntity<?> addArticle(MultipartFile file, String name, String description, String price) {
+    public ResponseEntity<?> addArticle(MultipartFile file, String name, String description, String price, Long sellerId) {
 
         makeDirectoryIfNotExist(imageDirectory);
         Path fileNamePath = Paths.get(imageDirectory, file.getName());
-        Article article = new Article(name, description, Double.parseDouble(price), file.getName());
-
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        System.out.println(sellerId);
+        Article article = new Article(name, description, Double.parseDouble(price), file.getName(), sellerId);
+        System.out.println(article);
         try {
-            assert article != null;
-            articleService.save(this.toDto.convert(article));
+            articleService.save(article);
             Files.write(fileNamePath, file.getBytes());
-
             return new ResponseEntity<>(article, HttpStatus.CREATED);
         } catch (IOException ex) {
             return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
@@ -64,7 +71,7 @@ public class ArticleApiImpl implements ArticleApi {
     public ResponseEntity updateArticle(Article article) {
         System.out.println(article);
         if (article != null) {
-            articleService.save(this.toDto.convert(article));
+            articleService.save(article);
             return new ResponseEntity<>("Updated article" + article, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
