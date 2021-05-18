@@ -1,41 +1,42 @@
-import React, { Component } from "react";
+import React, {Component, useState} from "react";
 import {Redirect, useHistory} from "react-router-dom";
+import {TextField} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
-class Register extends Component {
-    constructor() {
-        super();
-        this.state = {
-            user: "seller",
-            submitValid: false
-        };
-        this.onChangeValue = this.onChangeValue.bind(this);
-    }
+export default function Register () {
 
-    onChangeValue(event) {
+    const [user, setUser] = useState('seller')
+    const [submitValid, setSubmitValid] = useState(false)
+    const history = useHistory();
+
+    const divStyle = {height: 930, backgroundSize: 'cover'};
+
+    function onChangeValue(type) {
         let email = document.getElementById('sellerName')
         let name = document.getElementById('sellerEmail')
-        if (event.target.id === 'seller') {
-            email.style.visibility = "visible";
-            name.style.visibility = "visible";
-            this.state.user = 'seller';
+        if (type === 'seller') {
+            email.removeAttribute('hidden');
+            name.removeAttribute('hidden');
+            setUser('seller')
         }
         else {
-            email.style.visibility = "hidden";
-            name.style.visibility = "hidden";
-            this.state.user = 'buyer';
+            email.hidden = true;
+            name.hidden = true;
+            setUser('buyer')
+
         }
-        console.log(this.state.user)
+        console.log(user)
     }
 
-    registerUser = () => {
+    function registerUser () {
         let name = document.getElementById('name').value;
         let lastName = document.getElementById('lastName').value;
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
         let address = document.getElementById('address').value;
 
-        if (this.state.user === 'buyer'){
-            if (this.validateRegister(name, lastName, username, password, address, '', '')) {
+        if (user === 'buyer'){
+            if (validateRegister(name, lastName, username, password, address, '', '')) {
                 let buyer = {
                     "username": username,
                     "lastName": lastName,
@@ -52,18 +53,16 @@ class Register extends Component {
                     body: JSON.stringify(buyer),
                 })
                     .then(response => response.json())
-                    .then(buyer => {
-                        console.log('Success:', buyer);
-                    })
+                    .then(history.push('/login'))
                     .catch((error) => {
                         console.error('Error:', error);
                 });
             }
-        } else if (this.state.user === 'seller') {
+        } else if (user === 'seller') {
             let sellerName = document.getElementById('sellerName').value;
             let email = document.getElementById('sellerEmail').value;
 
-            if ( this.validateRegister(name, lastName, username, password, address, email, sellerName)) {
+            if (validateRegister(name, lastName, username, password, address, email, sellerName)) {
                 let seller = {
                     "username":username,
                     "blocked": false,
@@ -73,8 +72,6 @@ class Register extends Component {
                     "address":address,
                     "email":email,
                     "sellerName":sellerName,
-                    "id": 392183,
-                    "role": "SELLER"
                 };
                 console.log(seller)
                 fetch('http://localhost:8080/seller/register', {
@@ -85,9 +82,7 @@ class Register extends Component {
                     body: JSON.stringify(seller),
                 })
                     .then(response => response.json())
-                    .then(buyer => {
-                        console.log('Success:', buyer);
-                    })
+                    .then(history.push('/login'))
                     .catch((error) => {
                         console.error('Error:', error);
                     });
@@ -95,51 +90,53 @@ class Register extends Component {
         }
     }
 
-    validateRegister = (name, lastName, username, password, address, email, sellerName) => {
+    function validateRegister (name, lastName, username, password, address, email, sellerName) {
         let valid = true;
         if (name === "" || lastName === ""  || username === "" || password === "" || address === "") {
             valid = false
         }
-        if (this.state.user === 'seller') {
+        if (user === 'seller') {
             if (email === '' || sellerName === '')
-                valid = false
+            valid = false
         }
 
         if (!valid) {
-            this.state.submitValid = false
+            setSubmitValid(false)
             alert("Please fill out all the required fields")
         } else {
-            this.state.submitValid = true
-            alert("Succesfully registered !")
+            setSubmitValid(true)
         }
 
         return valid
     }
 
-    render() {
+    return (
+        <div style={divStyle} >
+            <div className="form-size">
+                <h1>Register as a</h1>
 
-        return (
-            <>
-                <form className="form-size" method="POST" action="login">
-                    <h1>Register</h1>
+                <span>
+                    <Button size="large" id="buyer" color="inherit" onClick={() => onChangeValue('buyer')}>
+                        buyer
+                    </Button>
+                    <Button size="large" id="seller" color="inherit" onClick={() => onChangeValue('seller')}>
+                        seller
+                    </Button>
+                </span>
 
-                    <input type="button" className="btn input-margin" value="As a seller" id="seller" onClick={this.onChangeValue} />
-                    <input type="button" className="btn input-margin" value="As a buyer" id="buyer" onClick={this.onChangeValue} />
+                <TextField className="input-margin" label="Name" id="name" type="text" variant="outlined" />
+                <TextField className="input-margin" label="Last name" id="lastName" type="text" variant="outlined" />
+                <TextField className="input-margin" label="Username" id="username" type="text" variant="outlined" />
+                <TextField className="input-margin" label="Password" id="password" type="password" variant="outlined" />
+                <TextField className="input-margin" label="Address" id="address" type="text" variant="outlined" />
+                <TextField className="input-margin" placeholder="Seller name" id="sellerName" type="text" variant="outlined"/>
+                <TextField className="input-margin" placeholder="Email" id="sellerEmail" type="email" variant="outlined"/>
 
-                    <input className="form-control input-margin" id="name" type="text" placeholder="Name"/>
-                    <input className="form-control input-margin" id="lastName" type="text" placeholder="Last name"/>
-                    <input className="form-control input-margin" id="username" type="text" placeholder="Address"/>
-                    <input className="form-control input-margin" id="password" type="text" placeholder="Username"/>
-                    <input className="form-control input-margin" id="address" type="password" placeholder="Password"/>
-
-                    <input className="form-control input-margin" type="text" id="sellerName" placeholder="Seller name"/>
-                    <input className="form-control input-margin" type="email" id="sellerEmail" placeholder="Email"/>
-
-                    <input className="form-control btn input-margin" value="Submit" onClick={this.registerUser} />
-                </form>
-            </>
-        );
-    }
+               <hr />
+                <Button size="large" color="inherit" onClick={() => registerUser()}>
+                    Submit
+                </Button>
+            </div>
+        </div>
+    );
 }
-
-export default Register;

@@ -1,11 +1,17 @@
 import {useState} from "react";
 import {useHistory} from "react-router-dom";
+import {ArticleService} from "../service/ArticleService";
+import {UserService} from "../service/UserService";
+import {AuthenticationService} from "../service/clients/AuthenticationService";
+import {TokenService} from "../service/TokenService";
+import {number} from "prop-types";
 
 export default function AddArticle() {
     const [state, setState] = useState({
         selectedImg: null,
         selectedImgName: ''
     })
+    const divStyle = {height: 930, backgroundSize: 'cover'};
     const history = useHistory();
 
     function fileSelectedHandler(event) {
@@ -13,42 +19,46 @@ export default function AddArticle() {
         const reader = new FileReader()
         reader.onload = () => {
             if (reader.readyState === 2) {
-                setState({selectedImg: event.target.files[0]})
+                state.selectedImg = event.target.files[0]
                 state.selectedImgName = event.target.files[0].name
             }
         }
         reader.readAsDataURL(event.target.files[0])
     }
 
-    function addArticle(e) {
+    async function addArticle(e) {
         const name = document.getElementById("name").value
         const description = document.getElementById("description").value
         const price = document.getElementById("price").value
         if (name !== "" && description !== "" && price !== "" && state.selectedImg !== null) {
-            e.preventDefault();
-            const formData = new FormData();
-            console.log(state.selectedImg)
-            formData.append('imageFile', state.selectedImg);
-            formData.append("name", document.getElementById("name").value)
-            formData.append("description", document.getElementById("description").value)
-            formData.append("price", document.getElementById("price").value)
-            formData.append("imageName", state.selectedImgName)
 
-            fetch('http://localhost:8080/addArticle', {
-                mode: 'no-cors',
-                method: 'post',
-                body: formData
-            }).then(res => {
-                console.log(res.data);
+            try {
+                e.preventDefault();
+
+                console.log(state.selectedImg)
+                const formData = new FormData()
+                const username = TokenService.decodeToken(TokenService.getToken()).sub
+                const seller = (await UserService.getUser(username)).data
+                console.log(username)
+                console.log(seller)
+                formData.append('imageFile', state.selectedImg);
+                formData.append("name", name)
+                formData.append("description", description)
+                formData.append("price", price)
+                formData.append("sellerId", seller.id)
+
+                await ArticleService.addArticle(formData)
                 alert("Article added successfully.")
-                // history.push("./browse")
-            });
+                history.push("./browse")
+            } catch (error) {
+                console.error(`Error while adding new article: ${error}`);
+            }
         } else {
             alert("Make sure to fill out all the fields !")
         }
     }
     return(
-        <>
+        <div style={divStyle}>
             <form className="form-size" method="POST">
                 <h1>Add article</h1>
 
@@ -58,6 +68,6 @@ export default function AddArticle() {
                 <input accept="image/*" className="form-control input-margin" id="picture" type="file" onChange={fileSelectedHandler}/>
                 <input className="form-control btn input-margin" onClick={addArticle} value="Submit" />
             </form>
-        </>
+        </div>
     )
 }

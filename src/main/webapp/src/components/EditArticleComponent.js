@@ -14,6 +14,7 @@ export default function EditArticle () {
     })
     const [hasError, setError] = useState()
     const history = useHistory();
+    const divStyle = {height: 930, backgroundSize: 'cover'};
 
     const {id} = useParams();
 
@@ -53,22 +54,29 @@ export default function EditArticle () {
 
     }
 
+    const changeInputHandler = (event, prop) => {
+        const articleChanged = {...article};
+        articleChanged[prop] = event.target.value;
+        setArticle(articleChanged)
+    }
+
     return(
-        <>
+        <div style={divStyle}>
             <div className="form-size">
-                <h1>Edit article {article.name}</h1>
+                <h1>Edit article</h1>
                 <hr />
-                <TextField label="Name" id="name" type="text" placeholder={article.name}/>
-                <hr />
-                <TextField label="Description" id="description" type="text" placeholder={article.description}/>
-                <hr />
-                <TextField label="Price" id="price" type="number" placeholder={article.price}/>
+                <TextField label="Name" id="name" type="text" className="input-margin" value={article.name} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'name')}/>
+                <TextField label="Description" id="description" type="text" className="input-margin" value={article.description} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'description')}/>
+                <TextField label="Price" id="price" type="number" className="input-margin" value={article.price} variant="outlined"
+                           onChange={(event) => changeInputHandler(event, 'price')}/>
                 <hr />
 
                 <Button size="large" color="inherit" onClick={editArticle}>
                     Submit
                 </Button>
             </div>
-        </>
+        </div>
     )
 }
