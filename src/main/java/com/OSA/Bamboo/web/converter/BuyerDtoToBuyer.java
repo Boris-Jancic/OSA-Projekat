@@ -2,7 +2,7 @@ package com.OSA.Bamboo.web.converter;
 
 import com.OSA.Bamboo.dto.BuyerDto;
 import com.OSA.Bamboo.model.Buyer;
-import com.OSA.Bamboo.model.enums.UserRole;
+import com.OSA.Bamboo.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +12,11 @@ public class BuyerDtoToBuyer implements Converter<BuyerDto, Buyer> {
     }
     
     @Override
-    public Buyer convert(BuyerDto buyerDto) {
+    public Buyer convert(BuyerDto dto) {
         Buyer buyer = new Buyer();
-        buyer.setId(null);
-        buyer.getUser().setName(buyerDto.getName());
-        buyer.getUser().setLastName(buyerDto.getLastName());
-        buyer.getUser().setUsername(buyerDto.getUsername());
-        buyer.getUser().setPassword(buyerDto.getPassword());
-        buyer.setAddress(buyerDto.getAddress());
-        buyer.getUser().setBlocked(false);
-        buyer.getUser().setRole(UserRole.BUYER);
+        User user = new User(dto.getName(), dto.getLastName(), dto.getUsername(), dto.getPassword());
+        buyer.setUser(user);
+        buyer.setAddress(dto.getAddress());
         return buyer;
     }
 }

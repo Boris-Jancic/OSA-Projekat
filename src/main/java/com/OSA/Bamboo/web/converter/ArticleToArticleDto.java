@@ -17,11 +17,9 @@ public class ArticleToArticleDto implements Converter<Article, ArticleDto> {
     @Override
     public ArticleDto convert(Article article) {
         ArticleDto dto = new ArticleDto();
-        dto.setId(article.getId());
         dto.setName(article.getName());
         dto.setDescription(article.getDescription());
         dto.setPrice(article.getPrice());
-        dto.setImageName(article.getImageName());
         return dto;
     }
 
