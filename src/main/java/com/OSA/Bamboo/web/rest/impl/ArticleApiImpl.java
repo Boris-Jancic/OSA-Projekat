@@ -36,15 +36,6 @@ public class ArticleApiImpl implements ArticleApi {
 
         makeDirectoryIfNotExist(imageDirectory);
         Path fileNamePath = Paths.get(imageDirectory, file.getName());
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
         Article article = new Article(name, description, Double.parseDouble(price), file.getName(), sellerId);
         System.out.println(article);
         try {
@@ -59,6 +50,12 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity getAllArticles() {
         List<Article> articles = articleService.getAll();
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getSellerArticles(Long id) {
+        List<Article> articles = articleService.getSellerArticles(id);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
@@ -80,7 +77,7 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity<?> deleteArticle(Long id) {
         articleService.delete(id);
-        return new ResponseEntity<>("Article deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Article deleted", HttpStatus.OK); // TODO: vrati 204
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {
