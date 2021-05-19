@@ -13,6 +13,8 @@ import Register from "./components/RegisterComponent";
 import UserProfile from "./components/UserProfile";
 import {UserTable} from "./components/UserTable";
 import AdminLayout from "./layouts/AdminLayout";
+import SellerComponent from "./components/SellerComponent";
+import CartComponent from "./components/CartComponent";
 
 function App() {
   return (
@@ -23,23 +25,33 @@ function App() {
               <Route path="/home" exact component={HomeLayout}/>
               <Route path="/register" exact component={Register}/>
               <Route path="/login" exact component={LoginLayout}/>
+              <Route path="/profile" exact component={UserProfile}/>
+              <PrivateRoute
+                  path="/sellers"
+                  exact
+                  component={SellerComponent}
+                  roles={["ROLE_BUYER"]}/>
+              <PrivateRoute
+                  path="/cart"
+                  exact
+                  component={CartComponent}
+                  roles={["ROLE_BUYER"]}/>
               <PrivateRoute
                   path="/addArticle"
                   exact
                   component={AddArticle}
                   roles={["ROLE_SELLER"]}/>
               <PrivateRoute
-                  path="/users"
-                  exact
-                  component={AdminLayout}
-                  roles={["ROLE_ADMIN"]}/>
-              <PrivateRoute
                   path="/editArticle/:id"
                   exact
                   component={EditArticle}
                   roles={["ROLE_SELLER"]}/>
-              <Route path="/browse" exact component={BrowseLayout}/>
-              <Route path="/profile" exact component={UserProfile}/>
+              <PrivateRoute
+                  path="/users"
+                  exact
+                  component={AdminLayout}
+                  roles={["ROLE_ADMIN"]}/>
+              <Route path="/browse/:id" exact component={BrowseLayout}/>
               <Route component={NotFound} />
           </Switch>
         </Router>

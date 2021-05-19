@@ -49,7 +49,7 @@ export default function EditArticle () {
             },
             body: JSON.stringify(article),
         })
-        history.push("../browse")
+        history.push("../browse/" + article.sellerId)
         alert("Article updated successfully.")
 
     }
