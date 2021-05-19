@@ -3,7 +3,6 @@ package com.OSA.Bamboo.service.impl;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.repository.ArticleRepo;
 import com.OSA.Bamboo.service.ArticleService;
-import com.OSA.Bamboo.web.converter.ArticleDtoToArticle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,13 @@ import java.util.Optional;
 public class JpaArticleService implements ArticleService {
 
     @Autowired
-    private ArticleDtoToArticle toEntity;
-    @Autowired
     private ArticleRepo articleRepo;
 
     @Override
     public List<Article> getAll() { return articleRepo.findAll(); }
+
+    @Override
+    public List<Article> getSellerArticles(Long id) { return articleRepo.getSellerArticles(id); }
 
     @Override
     public Article save(Article article) {

@@ -1,7 +1,9 @@
 package com.OSA.Bamboo.service.impl;
 
 import com.OSA.Bamboo.dto.UserPasswordChangeDto;
+import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
+import com.OSA.Bamboo.repository.SellerRepo;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,9 @@ public class JpaUserService implements UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private SellerRepo sellerRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -32,14 +38,15 @@ public class JpaUserService implements UserService {
     }
 
     @Override
+    public List<Seller> sellers() { return sellerRepo.findAll(); }
+
+    @Override
     public User save(User user) {
         return userRepo.save(user);
     }
 
     @Override
-    public void delete(String username) {
-        userRepo.deleteByUsername(username);
-    }
+    public void delete(String username) { userRepo.deleteByUsername(username); }
 
     @Override
     public User findByUsername(String username) {

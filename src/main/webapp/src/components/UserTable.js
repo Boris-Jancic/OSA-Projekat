@@ -33,7 +33,7 @@ class UserTable extends Component {
 
     render() {
         return(
-            <div>
+            <div className="form-table">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead>

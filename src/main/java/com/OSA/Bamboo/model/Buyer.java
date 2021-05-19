@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 public class Buyer {

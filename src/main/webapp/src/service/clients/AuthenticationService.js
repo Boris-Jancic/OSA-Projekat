@@ -17,7 +17,7 @@ async function login(userCredentials) {
         const decoded_token = TokenService.decodeToken(response.data);
         if (decoded_token) {
             TokenService.setToken(response.data);
-            window.location.assign("/browse");
+            window.location.assign("/home");
         } else {
             console.error("Invalid token");
         }
