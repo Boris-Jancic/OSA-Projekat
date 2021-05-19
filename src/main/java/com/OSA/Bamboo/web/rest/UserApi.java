@@ -9,12 +9,14 @@ import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 public interface UserApi {
 
     @PostMapping(value = "/seller/register",
@@ -34,15 +36,22 @@ public interface UserApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getUser(@PathVariable("username") String username);
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping(value = "/users",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getUsers();
+
+    @PreAuthorize("hasAnyRole('ROLE_BUYER')")
+    @GetMapping(value = "/sellers",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity<User> getSellers();
 
     @PutMapping(value = "/user/changePass/{username}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Void> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
 
+    @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER')")
     @PutMapping(value = "/user/edit",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
