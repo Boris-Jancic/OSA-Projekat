@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {UserService} from "../service/UserService";
-import {AuthenticationService} from "../service/clients/AuthenticationService";
+import {UserService} from "../../service/UserService";
+import {AuthenticationService} from "../../service/clients/AuthenticationService";
 import {Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";

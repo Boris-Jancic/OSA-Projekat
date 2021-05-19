@@ -1,9 +1,9 @@
 import {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {ArticleService} from "../service/ArticleService";
-import {UserService} from "../service/UserService";
-import {AuthenticationService} from "../service/clients/AuthenticationService";
-import {TokenService} from "../service/TokenService";
+import {ArticleService} from "../../service/ArticleService";
+import {UserService} from "../../service/UserService";
+import {AuthenticationService} from "../../service/clients/AuthenticationService";
+import {TokenService} from "../../service/TokenService";
 import {number} from "prop-types";
 
 export default function AddArticle() {

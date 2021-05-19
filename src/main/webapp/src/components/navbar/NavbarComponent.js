@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Navbar, Nav} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
-import {TokenService} from "../service/TokenService";
-import {AuthenticationService} from "../service/clients/AuthenticationService";
+import {TokenService} from "../../service/TokenService";
+import {AuthenticationService} from "../../service/clients/AuthenticationService";
 import {createMuiTheme, Link, MuiThemeProvider} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {lightBlue} from "@material-ui/core/colors";
-import logo from '../static/images/logo.svg'
-import {UserService} from "../service/UserService";
-import AxiosClient from "../service/clients/AxiosClient";
+import logo from '../../static/images/logo.svg'
+import {UserService} from "../../service/UserService";
+import AxiosClient from "../../service/clients/AxiosClient";
 
 function NavbarComponent () {
     const [browseUrl, setBrowseUrl] = useState('')
