@@ -16,4 +16,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT u FROM User u WHERE u.role = 'SELLER' or u.role = 'BUYER'")
     List<User> getAllUsersExeptAdmins();
+
+    @Query(value = "SELECT u FROM User u WHERE u.role = 'SELLER'")
+    List<User> getSellers();
 }
