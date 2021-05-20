@@ -123,6 +123,7 @@ export default function Register () {
                         seller
                     </Button>
                 </span>
+                <hr />
 
                 <TextField className="input-margin" label="Name" id="name" type="text" variant="outlined" />
                 <TextField className="input-margin" label="Last name" id="lastName" type="text" variant="outlined" />

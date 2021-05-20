@@ -12,8 +12,10 @@ import NotFound from "./layouts/NotFound";
 import Register from "./components/crud/RegisterComponent";
 import UserProfile from "./components/view/UserProfile";
 import AdminLayout from "./layouts/AdminLayout";
-import SellerComponent from "./components/view/SellerComponent";
+import SellerLayout from "./layouts/SellerLayout";
 import CartItemsTable from "./components/tables/CartItemsTable";
+import OrderTable from "./components/tables/OrderTable";
+import SellerProfile from "./components/view/SellerProfile";
 
 function App() {
   return (
@@ -28,12 +30,17 @@ function App() {
               <PrivateRoute
                   path="/sellers"
                   exact
-                  component={SellerComponent}
+                  component={SellerLayout}
                   roles={["ROLE_BUYER"]}/>
               <PrivateRoute
                   path="/cart"
                   exact
                   component={CartItemsTable}
+                  roles={["ROLE_BUYER"]}/>
+              <PrivateRoute
+                  path="/orders"
+                  exact
+                  component={OrderTable}
                   roles={["ROLE_BUYER"]}/>
               <PrivateRoute
                   path="/addArticle"
@@ -45,6 +52,11 @@ function App() {
                   exact
                   component={EditArticle}
                   roles={["ROLE_SELLER"]}/>
+              <PrivateRoute
+                  path="/seller/:username"
+                  exact
+                  component={SellerProfile}
+                  roles={["ROLE_SELLER", "ROLE_BUYER"]}/>
               <PrivateRoute
                   path="/users"
                   exact

@@ -61,10 +61,10 @@ export default function CartItemsTable() {
         }
         console.log(order)
         console.log(orderArticles)
+        await OrderService.addOrder(order)
         for (const key of Object.keys(orderArticles)) {
             await OrderService.addCartItem(orderArticles[key])
         }
-        await OrderService.addOrder(order)
         window.location.assign("/sellers");
     }
 

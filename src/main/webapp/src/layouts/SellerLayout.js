@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {UserService} from "../../service/UserService";
-import {AuthenticationService} from "../../service/clients/AuthenticationService";
+import {UserService} from "../service/UserService";
+import {AuthenticationService} from "../service/clients/AuthenticationService";
 import {Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
 
-export default function SellerComponent() {
+export default function SellerLayout() {
     const history = useHistory();
     const [sellers, setSellers] = useState([])
+    const [hasError, setError] = useState()
 
     useEffect(() => {
         fetchSellers()
             .then(res => setSellers(res.data))
+            .catch(err => setError(err));
     },[])
 
     const {id} = useParams();
@@ -35,7 +37,7 @@ export default function SellerComponent() {
                 alignItems="flex-start"
             >
                 {sellers.map(elem => (
-                    <Grid item xs={12} sm={12} md={6} key={sellers.indexOf(elem)}>
+                    <Grid item xs={12} sm={6} md={6} key={sellers.indexOf(elem)}>
                         <Card>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="h1">
@@ -53,12 +55,15 @@ export default function SellerComponent() {
                                 </Typography>
                             </CardContent>
 
-                            <CardActions>
-                                <Button size="small" color="primary" href={"/browse/" + elem.user.id}>
-                                    View articles
+                            <CardActions style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}><Button size="small" color="primary" href={"/browse/" + elem.user.id}>
+                                    articles
                                 </Button>
-                                <Button size="small" color="primary" href={"/seller/" + elem.user.id}>
-                                    View seller
+                                <Button size="small" color="primary" href={"/seller/" + elem.user.username}>
+                                    comments
                                 </Button>
                             </CardActions>
                         </Card>

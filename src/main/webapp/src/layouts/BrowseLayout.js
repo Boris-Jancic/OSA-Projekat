@@ -123,25 +123,27 @@ export default function BrowseLayout() {
                                         </Typography>
                                     </CardContent>
 
+                                    <CardActions style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
                                     {AuthenticationService.getRole() === "ROLE_SELLER" && (
-                                        <CardActions>
+                                        <>
                                             <Button size="small" color="primary" href={"/editArticle/" + elem.id}>
                                                 Edit
                                             </Button>
                                             <Button size="small" color="primary" onClick={() => handleDelete(elem.id)}>
                                                 Delete
                                             </Button>
-                                        </CardActions>
+                                        </>
                                     )}
                                     {AuthenticationService.getRole() === "ROLE_BUYER" && (
-                                        <CardActions>
-                                                {/*<TextField label="Quanity" id="quanity" type="number" className="input-margin" variant="outlined"/>*/}
-                                                <br />
-                                                <Button size="small" type="submit" color="primary" onClick={() => handleClickOpen(elem.id)}>
-                                                    Add to cart
-                                                </Button>
-                                        </CardActions>
+                                            <Button size="small" type="submit" color="primary" onClick={() => handleClickOpen(elem.id)}>
+                                                Add to cart
+                                            </Button>
                                     )}
+                                    </CardActions>
                                 </Card>
                             </Grid>
                     ))}

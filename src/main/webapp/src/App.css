@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   font-family: "Lucida Console", "Courier New", monospace;
-  background-image: url("static/images/background.jpg");
+  /*background-image: url("static/images/background.jpg");*/
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -72,8 +72,8 @@
 .form-size {
   background-image: linear-gradient(45deg ,#12cc44, #f5ed7a);
   opacity: 0.97;
-  margin: 3% 30%;
-  padding: 5% 10% 5% 10%;
+  margin: 0.5% 30%;
+  padding: 2% 8% 2% 8%;
   border-radius: 25px;
   border: 2px solid #73AD21;
 }
