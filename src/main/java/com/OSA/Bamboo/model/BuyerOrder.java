@@ -27,7 +27,5 @@ public class BuyerOrder {
 
     private boolean archivedComment;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "username")
-    private User user;
+    private String user;
 }
