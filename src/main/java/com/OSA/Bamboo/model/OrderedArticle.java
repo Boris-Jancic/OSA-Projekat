@@ -19,4 +19,6 @@ public class OrderedArticle {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "article_id")
     private Article article;
+
+    private Long orderId;
 }

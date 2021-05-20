@@ -2,11 +2,13 @@ package com.OSA.Bamboo.web.rest;
 
 import com.OSA.Bamboo.dto.BuyerOrderDto;
 import com.OSA.Bamboo.dto.OrderedArticleDto;
+import com.OSA.Bamboo.model.BuyerOrder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 
 @RestController
@@ -25,14 +27,19 @@ public interface OrderApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity postOrderedArticle(@Valid @RequestBody OrderedArticleDto dto);
 
-    @PreAuthorize("hasAuthority('ROLE_BUYER')")
+    @PermitAll
+    @GetMapping(value = "/sellerComments/{username}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity sellerComments(@PathVariable("username") String username);
+
+    @PermitAll
     @GetMapping(value = "/getBuyerOrders/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getOrder(@PathVariable("username") String username);
+    ResponseEntity getOrders(@PathVariable("username") String username);
 
-    @PreAuthorize("hasAuthority('ROLE_BUYER')")
+    @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER')")
     @PutMapping(value = "/updateOrder",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity updateOrder();
+    ResponseEntity updateOrder(@Valid @RequestBody BuyerOrder buyerOrder);
 }

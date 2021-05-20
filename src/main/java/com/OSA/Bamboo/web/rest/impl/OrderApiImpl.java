@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Component
 public class OrderApiImpl implements OrderApi {
@@ -31,43 +32,16 @@ public class OrderApiImpl implements OrderApi {
     @Autowired
     private ArticleService articleService;
 
-//    @Override
-//    public ResponseEntity postOrder(BuyerOrderDto buyerOrderDto, List<OrderedArticleDto> orderedArticleDtoList) {
-//        System.out.println(buyerOrderDto);
-//        System.out.println(orderedArticleDtoList);
-//        BuyerOrder buyerOrder = toEntityBuyerO.convert(buyerOrderDto);
-//        List<OrderedArticle> orderedArticles = new ArrayList<>();
-//        if (buyerOrder != null) {
-//            buyerOrder.setHourlyRate(LocalDate.now());
-//            buyerOrder.setDelivered(false);
-//
-//            for (OrderedArticleDto dto : orderedArticleDtoList) {
-//                OrderedArticle orderedArticle = new OrderedArticle();
-//                Optional<Article> article = articleService.one(dto.getArticleId());
-//
-//                orderedArticle.setQuanity(dto.getQuanity());
-//
-//                if (article.isPresent())
-//                    orderedArticle.setArticle(article.get());
-//                else
-//                    orderedArticle.setArticle(null);
-//
-//                orderedArticles.add(orderedArticle);
-//            }
-//
-//            orderService.save(buyerOrder, orderedArticles);
-//            return new ResponseEntity(buyerOrder, HttpStatus.OK);
-//        }
-//        return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
-//    }
+    private Long orderId = 1L;
 
     @Override
     public ResponseEntity postOrder(@Valid BuyerOrderDto dto) {
-        System.out.println(dto);
         BuyerOrder buyerOrder = toEntityBuyerO.convert(dto);
         System.out.println(buyerOrder);
         if (buyerOrder != null) {
             orderService.saveBuyerOrder(buyerOrder);
+            System.out.println(buyerOrder.getId());
+            orderId = buyerOrder.getId();
             return new ResponseEntity<>(buyerOrder, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -75,10 +49,9 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public ResponseEntity postOrderedArticle(@Valid OrderedArticleDto dto) {
-        System.out.println(dto);
         OrderedArticle orderedArticle = toEntityOrderA.convert(dto);
-        System.out.println(orderedArticle);
         if (orderedArticle != null) {
+            orderedArticle.setOrderId(orderId);
             orderService.saveOrderedArticle(orderedArticle);
             return new ResponseEntity<>(orderedArticle, HttpStatus.OK);
         }
@@ -86,12 +59,23 @@ public class OrderApiImpl implements OrderApi {
     }
 
     @Override
-    public ResponseEntity getOrder(String username) {
-        return null;
+    public ResponseEntity sellerComments(String username) {
+        List<BuyerOrder> orders = orderService.getSellerComments(username);
+        return new ResponseEntity(orders, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity updateOrder() {
-        return null;
+    public ResponseEntity getOrders(String username) {
+        List<BuyerOrder> buyerOrders = orderService.getBuyerOrders(username);
+        if (!buyerOrders.isEmpty())
+            return new ResponseEntity<>(buyerOrders, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity updateOrder(BuyerOrder buyerOrder) {
+        if (buyerOrder != null)
+            return new ResponseEntity<>(orderService.saveBuyerOrder(buyerOrder), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

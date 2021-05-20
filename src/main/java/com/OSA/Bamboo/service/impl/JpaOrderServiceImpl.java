@@ -15,6 +15,7 @@ public class JpaOrderServiceImpl implements OrderService {
 
     @Autowired
     private BuyerOrderRepo buyerOrderRepo;
+
     @Autowired
     private OrderedArticleRepo orderedArticleRepo;
 
@@ -24,12 +25,22 @@ public class JpaOrderServiceImpl implements OrderService {
     }
 
     @Override
+    public BuyerOrder findById(Long id) {
+        return buyerOrderRepo.findById(id).get();
+    }
+
+    @Override
     public OrderedArticle saveOrderedArticle(OrderedArticle orderedArticle) {
         return orderedArticleRepo.save(orderedArticle);
     }
 
     @Override
     public List<BuyerOrder> getBuyerOrders(String username) {
-        return null;
+        return buyerOrderRepo.findNotDeliveredOrdersByUsername(username);
+    }
+
+    @Override
+    public List<BuyerOrder> getSellerComments(String username) {
+        return buyerOrderRepo.findSellerComments(username);
     }
 }

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {TokenService} from "../service/TokenService";
-import {UserService} from "../service/UserService";
-import {AuthenticationService} from "../service/clients/AuthenticationService";
+import {TokenService} from "../../service/TokenService";
+import {UserService} from "../../service/UserService";
+import {AuthenticationService} from "../../service/clients/AuthenticationService";
 import {useHistory} from "react-router-dom";
 
 export default function UserProfile () {

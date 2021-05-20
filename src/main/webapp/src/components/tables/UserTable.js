@@ -3,8 +3,8 @@ import React, {Component, useEffect, useState} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
-import {UserService} from "../service/UserService";
-import {ArticleService} from "../service/ArticleService";
+import {UserService} from "../../service/UserService";
+import {ArticleService} from "../../service/ArticleService";
 
 class UserTable extends Component {
     constructor(props) {

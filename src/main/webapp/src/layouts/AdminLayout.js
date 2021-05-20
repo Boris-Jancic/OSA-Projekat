@@ -1,4 +1,4 @@
-import UserTable from "../components/UserTable";
+import UserTable from "../components/tables/UserTable";
 
 const AdminLayout = () => {
 

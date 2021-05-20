@@ -27,7 +27,7 @@ const LoginLayout = () => {
     return (
         <div  style={divStyle}>
             <div className="form-size">
-                <h1>Login</h1>
+                <h1>Sign in</h1>
 
                 <TextField label="Username"
                            id="username"
@@ -45,8 +45,12 @@ const LoginLayout = () => {
                            onChange={handleFormInputChange("password")}/>
                 <hr />
                 <Button size="large" color="inherit" onClick={login}>
-                    Submit
+                    log in
                 </Button>
+                <hr />
+                <a color={'inherit'} style={{color: "inherit"}} href="/register">
+                    Register
+                </a>
             </div>
         </div>
     );

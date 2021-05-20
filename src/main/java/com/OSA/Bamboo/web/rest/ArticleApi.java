@@ -34,7 +34,6 @@ public interface ArticleApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getArticle(@PathVariable("id") Long id);
 
-    @PreAuthorize("hasAuthority('ROLE_SELLER')")
     @PutMapping(value = "/updateArticle",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})

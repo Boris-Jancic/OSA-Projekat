@@ -2,13 +2,12 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow}
 import {classes} from "istanbul-lib-coverage";
 import Button from "@material-ui/core/Button";
 import React, {useEffect, useState} from "react";
-import {ArticleService} from "../service/ArticleService";
+import {ArticleService} from "../../service/ArticleService";
 import {border, width} from "@material-ui/system";
-import {OrderService} from "../service/OrderService";
-import {TokenService} from "../service/TokenService";
-import {number} from "prop-types";
+import {OrderService} from "../../service/OrderService";
+import {TokenService} from "../../service/TokenService";
 
-export default function CartComponent() {
+export default function CartItemsTable() {
     const cartItems = JSON.parse(localStorage.getItem('cartItems'))
     const [articles, setArticles] = useState([])
     const [orderArticles, setOrderArticles] = useState([])
@@ -62,10 +61,10 @@ export default function CartComponent() {
         }
         console.log(order)
         console.log(orderArticles)
+        await OrderService.addOrder(order)
         for (const key of Object.keys(orderArticles)) {
             await OrderService.addCartItem(orderArticles[key])
         }
-        await OrderService.addOrder(order)
         window.location.assign("/sellers");
     }
 
