@@ -2,7 +2,6 @@ package com.OSA.Bamboo.web.converter;
 
 import com.OSA.Bamboo.dto.BuyerOrderDto;
 import com.OSA.Bamboo.model.BuyerOrder;
-import com.OSA.Bamboo.model.User;
 import com.OSA.Bamboo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -26,10 +25,7 @@ public class BuyerOrderDtoToBuyerOrder implements Converter<BuyerOrderDto, Buyer
         buyerOrder.setDelivered(dto.isDelivered());
         buyerOrder.setGrade(dto.getGrade());
         buyerOrder.setHourlyRate(LocalDate.now());
-        User user = userService.findByUsername(dto.getUsername());
-        buyerOrder.setUser(user);
-        System.out.println(user);
-        System.out.println(buyerOrder.getUser());
+        buyerOrder.setUser(dto.getUsername());
         return buyerOrder;
     }
 }

@@ -13,7 +13,7 @@ public class BuyerOrderToBuyerOrderDto implements Converter<BuyerOrder, BuyerOrd
         dto.setArchivedComment(buyerOrder.isArchivedComment());
         dto.setDelivered(buyerOrder.isDelivered());
         dto.setGrade(buyerOrder.getGrade());
-        dto.setUsername(buyerOrder.getUser().getUsername());
+        dto.setUsername(buyerOrder.getUser());
         return dto;
     }
 }
