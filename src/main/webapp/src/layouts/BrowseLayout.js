@@ -10,6 +10,7 @@ import {TokenService} from "../service/TokenService";
 import {UserService} from "../service/UserService";
 import {useParams} from "react-router-dom";
 import {Alert, Form} from "react-bootstrap";
+import {DiscountService} from "../service/DiscountService";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,15 +31,19 @@ class ImageBackground extends React.Component<{ style: Property.BackgroundImage 
 
 export default function BrowseLayout() {
     const classes = useStyles()
+    const [seller, setSeller] = useState({})
     const [article, setArticle] = useState({})
     const [articles, setArticles] = useState([])
+    const [discountsA, setDiscountsA] = useState([])
+    const [discounts, setDiscounts] = useState([])
     const [cartArticles, setCartArticles] = useState([])
     const [hasError, setError] = useState(false)
-    const [disabled, setDisabled] = useState(true)
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
-        fetchArticles()
+        // fetchSeller().then(res => setSeller(res.data))
+        fetchArticles().catch(err => setError(err))
+        // fetchDiscounts().catch(err => setError(err)).then(calculateDiscounts())
     },[])
 
     const {id} = useParams();
@@ -46,9 +51,7 @@ export default function BrowseLayout() {
     const fetchArticles = async () => {
         try {
             if (AuthenticationService.getRole() === "SELLER") {
-                const username = TokenService.decodeToken(TokenService.getToken()).sub
-                const user = await UserService.getUser(username)
-                const response = await ArticleService.getSellerArticles(user.data.id)
+                const response = await ArticleService.getSellerArticles(id)
                 setArticles(response.data);
             } else {
                 const response = await ArticleService.getSellerArticles(id)
@@ -58,6 +61,31 @@ export default function BrowseLayout() {
             console.error(`Error while fetching articles: ${error}`);
         }
     }
+
+    // const fetchDiscounts = async () => {
+    //     const discounts = await DiscountService.getDiscounts(id);
+    //     setDiscounts(discounts.data)
+    // }
+
+    // const calculateDiscounts = () => {
+    //     let calculatedArticles = []
+    //
+    //     for (let i = 0; i < articles.length; i++) {
+    //         let article = articles[i]
+    //         for (let i = 0; i < discounts.length; i++) {
+    //             let id = discounts[i].article.id
+    //             if (id === article.id) {
+    //                 console.log("ACTION")
+    //                 article["price"] = 3000
+    //             }
+    //         }
+    //         console.log(article)
+    //         calculatedArticles.push(article)
+    //     }
+    //
+    //     console.log(calculatedArticles)
+    //     setArticles(calculatedArticles)
+    // }
 
     const handleDelete = async (id) => {    // deletes chosen article
         await ArticleService.deleteArticle(id);
@@ -86,6 +114,8 @@ export default function BrowseLayout() {
     }
 
     console.log(articles)
+    console.log(discounts)
+    console.log(discountsA)
 
     return (
             <div className={classes.root} class="card-view">
@@ -115,8 +145,18 @@ export default function BrowseLayout() {
                                         <Typography gutterBottom variant="h5" component="h1">
                                             {elem.name}
                                         </Typography>
+                                        {/*{discounts.map(discount => (*/}
+                                        {/*    <Typography variant="body2" color="textSecondary" component="h2">*/}
+                                        {/*        {discount.article.id === elem.id && (*/}
+                                        {/*            <b> {elem.price - elem.price * (discount.discountPercent * 0.01)} € DISCOUNT</b>*/}
+                                        {/*        )}*/}
+                                        {/*        {discount.article.id !== elem.id && (*/}
+                                        {/*            <b> {elem.price} €</b>*/}
+                                        {/*        )}*/}
+                                        {/*    </Typography>*/}
+                                        {/*))}*/}
                                         <Typography variant="body2" color="textSecondary" component="h2">
-                                            <b> {elem.price} € </b>
+                                                <b> {elem.price} €</b>
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             {elem.description}

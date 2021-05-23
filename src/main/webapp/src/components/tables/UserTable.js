@@ -6,7 +6,7 @@ import {classes} from "istanbul-lib-coverage";
 import {UserService} from "../../service/UserService";
 import {ArticleService} from "../../service/ArticleService";
 
-class UserTable extends Component {
+export class UserTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,11 +14,11 @@ class UserTable extends Component {
         };
     }
 
-    componentDidMount() {
-        fetch('http://localhost:8080/users')
+    async componentDidMount() {
+        await fetch('http://localhost:8080/users')
             .then((response) => response.json())
             .then(userData => {
-                this.setState({ users: userData });
+                this.setState({users: userData});
             });
     }
 
@@ -31,7 +31,9 @@ class UserTable extends Component {
         window.location.reload()
     }
 
+
     render() {
+        console.log(this.state.users)
         return(
             <div className="form-table">
                 <TableContainer component={Paper}>
@@ -47,26 +49,26 @@ class UserTable extends Component {
                         </TableHead>
                         <TableBody>
 
-                        {this.state.users.map(row => (
-                            <TableRow key={row.name}>
-                                <TableCell align={"center"}>{row.id}</TableCell>
-                                <TableCell align={"center"}>{row.name}</TableCell>
-                                <TableCell align={"center"}>{row.lastName}</TableCell>
-                                <TableCell align={"center"}>{row.username}</TableCell>
-                                <TableCell align={"center"}>
+                            {this.state.users.map(row => (
+                                <TableRow key={row.name}>
+                                    <TableCell align={"center"}>{row.id}</TableCell>
+                                    <TableCell align={"center"}>{row.name}</TableCell>
+                                    <TableCell align={"center"}>{row.lastName}</TableCell>
+                                    <TableCell align={"center"}>{row.username}</TableCell>
+                                    <TableCell align={"center"}>
 
-                                {(row.blocked === false) ? (
-                                    <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
-                                        Block
-                                    </Button>
-                                ) : (
-                                    <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
-                                        Unblock
-                                    </Button>
-                                )}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                        {(row.blocked === false) ? (
+                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                                Block
+                                            </Button>
+                                        ) : (
+                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                                Unblock
+                                            </Button>
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -74,5 +76,3 @@ class UserTable extends Component {
         );
     }
 }
-
-export default UserTable
