@@ -13,6 +13,7 @@ import AxiosClient from "../../service/clients/AxiosClient";
 function NavbarComponent () {
     const [browseUrl, setBrowseUrl] = useState('')
     const [commentsUrl, setCommentsUrl] = useState('')
+    const [discountUrl, setDiscountUrl] = useState('')
     const [hasError, setError] = useState()
 
 
@@ -26,11 +27,12 @@ function NavbarComponent () {
         const user = await UserService.getUser(username)
         setBrowseUrl("/browse/" + user.data.id)
         setCommentsUrl("/seller/" + user.data.username)
-
+        localStorage.setItem('sellerId', user.data.id)
     }
 
     console.log(browseUrl)
     console.log(commentsUrl)
+    console.log(discountUrl)
 
     return (
         <>
@@ -57,10 +59,16 @@ function NavbarComponent () {
                             <Button href={browseUrl}>My articles</Button>
                         )}
                         {AuthenticationService.getRole() === "ROLE_SELLER" && (
-                            <Button href={commentsUrl}>Comment managment</Button>
+                            <Button href="/addArticle">Add article</Button>
                         )}
                         {AuthenticationService.getRole() === "ROLE_SELLER" && (
-                            <Button href="/addArticle">Add article</Button>
+                            <Button href={commentsUrl}>Comments</Button>
+                        )}
+                        {AuthenticationService.getRole() === "ROLE_SELLER" && (
+                            <Button href={'/discounts'}>Add discount</Button>
+                        )}
+                        {AuthenticationService.getRole() === "ROLE_SELLER" && (
+                            <Button href={'/discounts/management'}>Discount management</Button>
                         )}
                         {AuthenticationService.getRole() === "ROLE_ADMIN" && (
                             <Button href="/users">User managment</Button>

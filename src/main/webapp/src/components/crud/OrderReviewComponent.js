@@ -52,7 +52,6 @@ export default function EditArticle () {
         })
         history.push("../browse/" + article.sellerId)
         alert("Article updated successfully.")
-
     }
 
     const changeInputHandler = (event, prop) => {
