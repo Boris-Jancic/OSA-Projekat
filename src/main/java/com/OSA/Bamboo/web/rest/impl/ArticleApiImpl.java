@@ -77,7 +77,7 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity<?> deleteArticle(Long id) {
         articleService.delete(id);
-        return new ResponseEntity<>("Article deleted", HttpStatus.OK); // TODO: vrati 204
+        return new ResponseEntity<>("Article deleted", HttpStatus.NO_CONTENT); // TODO: vrati 204
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {
