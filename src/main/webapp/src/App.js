@@ -16,6 +16,9 @@ import SellerLayout from "./layouts/SellerLayout";
 import CartItemsTable from "./components/tables/CartItemsTable";
 import OrderTable from "./components/tables/OrderTable";
 import SellerProfile from "./components/view/SellerProfile";
+import {DiscountComponent} from "./components/crud/DiscountComponent";
+import {DiscountTable} from "./components/tables/DiscountTable";
+import DiscountLayout from "./layouts/DiscountLayout";
 
 function App() {
   return (
@@ -46,6 +49,16 @@ function App() {
                   path="/addArticle"
                   exact
                   component={AddArticle}
+                  roles={["ROLE_SELLER"]}/>
+              <PrivateRoute
+                  path="/discounts"
+                  exact
+                  component={DiscountComponent}
+                  roles={["ROLE_SELLER"]}/>
+              <PrivateRoute
+                  path="/discounts/management"
+                  exact
+                  component={DiscountLayout}
                   roles={["ROLE_SELLER"]}/>
               <PrivateRoute
                   path="/editArticle/:id"
