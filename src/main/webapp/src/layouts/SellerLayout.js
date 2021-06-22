@@ -42,6 +42,11 @@ export default function SellerLayout() {
         window.location.assign("seller/" + username)
     }
 
+    function handleArticles(id) {
+        localStorage.removeItem("cartItems")
+        window.location.assign("browse/" + id)
+    }
+
     return(<div className={classes.root} className="card-view">
             <Grid
                 container
@@ -75,7 +80,7 @@ export default function SellerLayout() {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                            }}><Button size="small" color="primary" href={"/browse/" + elem.user.id}>
+                            }}><Button size="small" color="primary" onClick={() => handleArticles(elem.user.id)}>
                                     articles
                                 </Button>
                                 <Button size="small" color="primary" onClick={() => handleComments(elem.user.username, elem.grade)}>

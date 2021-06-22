@@ -62,31 +62,6 @@ export default function BrowseLayout() {
         }
     }
 
-    // const fetchDiscounts = async () => {
-    //     const discounts = await DiscountService.getDiscounts(id);
-    //     setDiscounts(discounts.data)
-    // }
-
-    // const calculateDiscounts = () => {
-    //     let calculatedArticles = []
-    //
-    //     for (let i = 0; i < articles.length; i++) {
-    //         let article = articles[i]
-    //         for (let i = 0; i < discounts.length; i++) {
-    //             let id = discounts[i].article.id
-    //             if (id === article.id) {
-    //                 console.log("ACTION")
-    //                 article["price"] = 3000
-    //             }
-    //         }
-    //         console.log(article)
-    //         calculatedArticles.push(article)
-    //     }
-    //
-    //     console.log(calculatedArticles)
-    //     setArticles(calculatedArticles)
-    // }
-
     const handleDelete = async (id) => {    // deletes chosen article
         await ArticleService.deleteArticle(id);
         setArticles((articles) => articles.filter((article) => article.id !== id));
@@ -108,20 +83,23 @@ export default function BrowseLayout() {
         })
         console.log("Article id " + article + " quanity: " + quanity)
         localStorage.setItem('cartItems', JSON.stringify(cartArticles))
-
         console.log(JSON.parse(localStorage.getItem('cartItems')))
         setOpen(false);
     }
 
-    console.log(articles)
-    console.log(discounts)
-    console.log(discountsA)
+    function handleCartView() {
+        const cartItems = localStorage.getItem("cartItems")
+        if (cartItems != null)
+            window.location.assign("/cart")
+        else
+            alert("Please add something to your cart")
+    }
 
     return (
             <div className={classes.root} class="card-view">
 
                 {AuthenticationService.getRole() === "ROLE_BUYER" && (
-                    <Button size="large" type="submit" color="inherit" href="/cart">
+                    <Button fullWidth={true} style={{marginBottom: "20px"}} type="submit" color="inherit" onClick={() => handleCartView()}>
                         CART
                     </Button>
                 )}

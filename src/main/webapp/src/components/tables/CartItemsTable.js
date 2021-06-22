@@ -59,12 +59,16 @@ export default function CartItemsTable() {
             'anonymousComment': false,
             'archivedComment': false
         }
+
         console.log(order)
         console.log(orderArticles)
+
         await OrderService.addOrder(order)
         for (const key of Object.keys(orderArticles)) {
             await OrderService.addCartItem(orderArticles[key])
         }
+
+        localStorage.removeItem("cartItems")
         window.location.assign("/sellers");
     }
 
