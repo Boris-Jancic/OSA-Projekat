@@ -8,6 +8,7 @@ export const UserService = {
     getUser,
     getUsers,
     getSellers,
+    getSellerGrade,
     changePassword
 };
 
@@ -29,6 +30,10 @@ async function getUsers() {
 
 async function getSellers() {
     return await AxiosClient.get("http://localhost:8080/sellers");
+}
+
+async function getSellerGrade(seller) {
+    return await AxiosClient.get("http://localhost:8080/seller/grade/" + seller);
 }
 
 async function editUser(user) {
