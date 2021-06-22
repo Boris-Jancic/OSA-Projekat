@@ -21,12 +21,26 @@ export default function SellerLayout() {
 
     const fetchSellers = async () => {
         try {
-            return await UserService.getSellers()
+            const sellerData = await UserService.getSellers()
+            let sellers = sellerData.data
+            for (const seller of sellers) {
+                const grade = await UserService.getSellerGrade(seller.user.username)
+                if (grade.data === '')
+                    seller['grade'] = "This seller has not been rated yet"
+                else
+                    seller['grade'] = grade.data
+            }
+            setSellers(sellerData.data)
         } catch (error) {
             console.error(`Error while fetching articles: ${error}`);
         }
     }
     console.log(sellers)
+
+    function handleComments(username, grade) {
+        localStorage.setItem("GRADE", grade)
+        window.location.assign("seller/" + username)
+    }
 
     return(<div className={classes.root} className="card-view">
             <Grid
@@ -48,6 +62,8 @@ export default function SellerLayout() {
                                     <b> {elem.address} </b>
                                     <hr />
                                     <b> {elem.email} </b>
+                                    <hr />
+                                    <b> Grade: <u><b> {elem.grade} </b></u> </b>
                                 </Typography>
                                 <hr />
                                 <Typography variant="body2" color="textSecondary" component="p">
@@ -62,7 +78,7 @@ export default function SellerLayout() {
                             }}><Button size="small" color="primary" href={"/browse/" + elem.user.id}>
                                     articles
                                 </Button>
-                                <Button size="small" color="primary" href={"/seller/" + elem.user.username}>
+                                <Button size="small" color="primary" onClick={() => handleComments(elem.user.username, elem.grade)}>
                                     comments
                                 </Button>
                             </CardActions>

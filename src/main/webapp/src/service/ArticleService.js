@@ -22,7 +22,7 @@ async function getArticles() {
 }
 
 async function editArticle(article) {
-    return await AxiosClient.put("http://localhost:8080/editArticle", article);
+    return await AxiosClient.put("http://localhost:8080/updateArticle", article);
 }
 
 async function deleteArticle(id) {

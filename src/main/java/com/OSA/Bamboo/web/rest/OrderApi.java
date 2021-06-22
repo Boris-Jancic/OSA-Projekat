@@ -32,6 +32,10 @@ public interface OrderApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity sellerComments(@PathVariable("username") String username);
 
+    @GetMapping(value = "/seller/grade/{username}",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity sellerGrade(@PathVariable("username") String username);
+
     @PermitAll
     @GetMapping(value = "/getBuyerOrders/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @CrossOrigin
 public interface ArticleApi {
 
-    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    @PreAuthorize("hasRole('SELLER')")
     @RequestMapping(value = "/addArticle",
             produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
     ResponseEntity<?> addArticle(@RequestParam("imageFile")MultipartFile file,
@@ -34,12 +34,13 @@ public interface ArticleApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getArticle(@PathVariable("id") Long id);
 
+    @PreAuthorize("hasRole('SELLER')")
     @PutMapping(value = "/updateArticle",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity updateArticle(@Valid @RequestBody Article article);
 
-    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    @PreAuthorize("hasRole('SELLER')")
     @DeleteMapping(value = "/deleteArticle/{id}")
     ResponseEntity<?> deleteArticle(@PathVariable("id") Long id);
 

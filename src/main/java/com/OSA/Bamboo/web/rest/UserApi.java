@@ -46,12 +46,13 @@ public interface UserApi {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getSellers();
 
+    @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER','ROLE_ADMIN')")
     @PutMapping(value = "/user/changePass/{username}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Void> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
 
-    @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER')")
+    @PreAuthorize("hasAnyRole('BUYER', 'SELLER','ADMIN')")
     @PutMapping(value = "/user/edit",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})

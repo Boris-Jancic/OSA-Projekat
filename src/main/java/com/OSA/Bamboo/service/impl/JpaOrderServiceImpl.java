@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JpaOrderServiceImpl implements OrderService {
@@ -42,5 +43,10 @@ public class JpaOrderServiceImpl implements OrderService {
     @Override
     public List<BuyerOrder> getSellerComments(String username) {
         return buyerOrderRepo.findSellerComments(username);
+    }
+
+    @Override
+    public Optional<Double> getSellerGrade(String username) {
+        return buyerOrderRepo.sellerGrade(username);
     }
 }

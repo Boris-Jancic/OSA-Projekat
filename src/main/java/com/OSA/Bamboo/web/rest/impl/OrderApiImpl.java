@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderApiImpl implements OrderApi {
@@ -62,6 +63,15 @@ public class OrderApiImpl implements OrderApi {
     public ResponseEntity sellerComments(String username) {
         List<BuyerOrder> orders = orderService.getSellerComments(username);
         return new ResponseEntity(orders, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity sellerGrade(String username) {
+        Optional<Double> grade = orderService.getSellerGrade(username);
+        if (grade.isPresent()) {
+            return new ResponseEntity<>(grade.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("This seller has not been rated yet", HttpStatus.NO_CONTENT);
     }
 
     @Override
