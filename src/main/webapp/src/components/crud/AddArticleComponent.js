@@ -7,41 +7,41 @@ import {TokenService} from "../../service/TokenService";
 import {number} from "prop-types";
 
 export default function AddArticle() {
-    const [state, setState] = useState({
-        selectedImg: null,
-        selectedImgName: ''
-    })
+    const [selectedImg, setSelectedImg] = useState({})
+    const [imgName, setImgName] = useState("")
     const divStyle = {height: 930, backgroundSize: 'cover'};
     const history = useHistory();
 
     function fileSelectedHandler(event) {
-        console.log(event.target.files[0])
-        const reader = new FileReader()
-        reader.onload = () => {
-            if (reader.readyState === 2) {
-                state.selectedImg = event.target.files[0]
-                state.selectedImgName = event.target.files[0].name
-            }
+        let file = event.target.files[0]
+        console.log("File to upload: " + file.name)
+        if (file) {
+            setImgName(file.name)
+            const reader = new FileReader()
+            reader.onload = handleReaderLoaded.bind(this)
+            reader.readAsBinaryString(file)
         }
-        reader.readAsDataURL(event.target.files[0])
+    }
+
+    function handleReaderLoaded(readerEvent) {
+        let binaryString = readerEvent.target.result
+        setSelectedImg(btoa(binaryString)) // base64 string
     }
 
     async function addArticle(e) {
         const name = document.getElementById("name").value
         const description = document.getElementById("description").value
         const price = document.getElementById("price").value
-        if (name !== "" && description !== "" && price !== "" && state.selectedImg !== null) {
-
+        console.log(selectedImg)
+        if (name !== "" && description !== "" && price !== "" && selectedImg !== null) {
             try {
                 e.preventDefault();
 
-                console.log(state.selectedImg)
                 const formData = new FormData()
                 const username = TokenService.decodeToken(TokenService.getToken()).sub
                 const seller = (await UserService.getUser(username)).data
-                console.log(username)
-                console.log(seller)
-                formData.append('imageFile', state.selectedImg);
+                formData.append('base64Image', selectedImg);
+                formData.append('imgName', imgName);
                 formData.append("name", name)
                 formData.append("description", description)
                 formData.append("price", price)
@@ -65,7 +65,8 @@ export default function AddArticle() {
                 <input className="form-control input-margin" id="name" type="text" placeholder="Name"/>
                 <input className="form-control input-margin" id="description" type="text" placeholder="Description"/>
                 <input className="form-control input-margin" id="price" type="number" placeholder="Price"/>
-                <input accept="image/*" className="form-control input-margin" id="picture" type="file" onChange={fileSelectedHandler}/>
+                <input accept="image/*" className="form-control input-margin"
+                       id="picture" type="file" onChange={(e) => fileSelectedHandler(e)}/>
                 <input className="form-control btn input-margin" onClick={addArticle} value="Submit" />
             </form>
         </div>
