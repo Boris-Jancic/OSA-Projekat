@@ -138,23 +138,13 @@ export default function BrowseLayout() {
                                 <Card variant="outlined">
                                     <CardMedia
                                         className={classes.media}
-                                        image={stockPhoto}
+                                        image={"data:image/png;base64," + elem.imageBytes}
                                         title="Contemplative Reptile"
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h1">
                                             {elem.name}
                                         </Typography>
-                                        {/*{discounts.map(discount => (*/}
-                                        {/*    <Typography variant="body2" color="textSecondary" component="h2">*/}
-                                        {/*        {discount.article.id === elem.id && (*/}
-                                        {/*            <b> {elem.price - elem.price * (discount.discountPercent * 0.01)} € DISCOUNT</b>*/}
-                                        {/*        )}*/}
-                                        {/*        {discount.article.id !== elem.id && (*/}
-                                        {/*            <b> {elem.price} €</b>*/}
-                                        {/*        )}*/}
-                                        {/*    </Typography>*/}
-                                        {/*))}*/}
                                         <Typography variant="body2" color="textSecondary" component="h2">
                                                 <b> {elem.price} €</b>
                                         </Typography>

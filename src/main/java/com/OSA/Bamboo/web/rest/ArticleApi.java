@@ -5,9 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -16,11 +16,12 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @RequestMapping(value = "/addArticle",
             produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
-    ResponseEntity<?> addArticle(@RequestParam("imageFile")MultipartFile file,
-                                        @RequestParam("name") String name,
-                                        @RequestParam("description") String description,
-                                        @RequestParam("price") String price,
-                                        @RequestParam("sellerId") Long sellerId);
+    ResponseEntity<?> addArticle(@RequestParam("base64Image")String base64Image,
+                                    @RequestParam("imgName") String imgName,
+                                    @RequestParam("name") String name,
+                                    @RequestParam("description") String description,
+                                    @RequestParam("price") String price,
+                                    @RequestParam("sellerId") Long sellerId);
 
     @GetMapping(value = "/allArticles",
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -28,7 +29,7 @@ public interface ArticleApi {
 
     @GetMapping(value = "/sellerArticles/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getSellerArticles(@PathVariable("id") Long id);
+    ResponseEntity getSellerArticles(@PathVariable("id") Long id) throws IOException;
 
     @GetMapping(value = "/getArticle/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
