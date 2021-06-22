@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams, useHistory } from "react-router-dom";
 import {CardActions, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import {ArticleService} from "../../service/ArticleService";
 
 export default function EditArticle () {
 
@@ -10,7 +11,8 @@ export default function EditArticle () {
         name:'',
         description: '',
         price: '',
-        imageName: ''
+        imageName: '',
+        sellerId: ''
     })
     const [hasError, setError] = useState()
     const history = useHistory();
@@ -41,17 +43,9 @@ export default function EditArticle () {
         if (price !== "")
             article.price = Number(price)
 
-        console.log(article)
-        fetch('http://localhost:8080/updateArticle', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(article),
-        })
+        ArticleService.editArticle(article)
+            .then(() => alert("Success"))
         history.push("../browse/" + article.sellerId)
-        alert("Article updated successfully.")
-
     }
 
     const changeInputHandler = (event, prop) => {
@@ -59,6 +53,8 @@ export default function EditArticle () {
         articleChanged[prop] = event.target.value;
         setArticle(articleChanged)
     }
+
+    console.log(article)
 
     return(
         <div style={divStyle}>

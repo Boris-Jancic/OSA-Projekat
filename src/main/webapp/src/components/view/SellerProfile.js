@@ -59,6 +59,7 @@ export default function SellerProfile() {
 
     return(
         <div className={classes.root} className="card-view">
+            <h2> Seller grade: {localStorage.getItem("GRADE")} </h2>
             <Grid
                 container
                 spacing={3}

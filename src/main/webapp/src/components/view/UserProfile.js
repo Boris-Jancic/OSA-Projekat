@@ -54,8 +54,9 @@ export default function UserProfile () {
             user.name = name
             user.lastName = lastName
             user.username = username
-            UserService.editUser(user).then(() =>  alert("User details successfully updated, login again"))
-            AuthenticationService.logout()
+            UserService.editUser(user)
+                .then(() =>  alert("User details successfully updated, login again"))
+                .then(() => AuthenticationService.logout())
         }
         else
             alert("Please fill out all the fields")
