@@ -21,7 +21,7 @@ export default function EditArticle () {
     const {id} = useParams();
 
     async function fetchArticle() {
-        const res = await fetch('http://localhost:8080/getArticle/' + id);
+        const res = await fetch('http://localhost:8080/articles/' + id);
         return res.json()
     }
 

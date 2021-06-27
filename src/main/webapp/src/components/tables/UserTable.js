@@ -5,21 +5,29 @@ import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
 import {UserService} from "../../service/UserService";
 import {ArticleService} from "../../service/ArticleService";
+import {TokenService} from "../../service/TokenService";
 
 export class UserTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
+            open: false,
+            fullWidth: true,
+            anonymous: false,
+            start: 'start',
+            end: 'end'
         };
     }
 
+
     async componentDidMount() {
-        await fetch('http://localhost:8080/users')
-            .then((response) => response.json())
-            .then(userData => {
-                this.setState({users: userData});
-            });
+        console.log(TokenService.getToken())
+        UserService.getUsers()
+            .then((response) => response.data)
+            .then(data => {
+                this.setState({users: data})
+            })
     }
 
     handleAction(user) {

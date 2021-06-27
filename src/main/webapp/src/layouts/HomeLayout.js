@@ -1,7 +1,9 @@
 import React from 'react'
 import logo from '../static/images/logo.svg'
+import {TokenService} from "../service/TokenService";
 
 const HomeLayout = () => {
+    console.log(TokenService.getToken())
 
     const divStyle = {height: 879, backgroundSize: 'cover', backgroundAttachment: 'fixed'};
     return (

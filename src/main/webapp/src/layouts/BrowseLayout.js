@@ -5,12 +5,7 @@ import Button from "@material-ui/core/Button";
 import {CardActions, CardMedia, Dialog, DialogActions, DialogContent, TextField} from "@material-ui/core";
 import {AuthenticationService} from "../service/clients/AuthenticationService";
 import {ArticleService} from "../service/ArticleService";
-import stockPhoto from '../static/images/stockBike.jpg'
-import {TokenService} from "../service/TokenService";
-import {UserService} from "../service/UserService";
 import {useParams} from "react-router-dom";
-import {Alert, Form} from "react-bootstrap";
-import {DiscountService} from "../service/DiscountService";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,19 +26,14 @@ class ImageBackground extends React.Component<{ style: Property.BackgroundImage 
 
 export default function BrowseLayout() {
     const classes = useStyles()
-    const [seller, setSeller] = useState({})
     const [article, setArticle] = useState({})
     const [articles, setArticles] = useState([])
-    const [discountsA, setDiscountsA] = useState([])
-    const [discounts, setDiscounts] = useState([])
     const [cartArticles, setCartArticles] = useState([])
     const [hasError, setError] = useState(false)
     const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
-        // fetchSeller().then(res => setSeller(res.data))
         fetchArticles().catch(err => setError(err))
-        // fetchDiscounts().catch(err => setError(err)).then(calculateDiscounts())
     },[])
 
     const {id} = useParams();

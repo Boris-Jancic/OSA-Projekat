@@ -50,13 +50,9 @@ public class JpaArticleService implements ArticleService {
                     article.setPrice(discountPrice);
                 }
             }
-            System.out.println(article);
         }
 
-        List<ArticleDto> articleDtos = toDto.convert(articles);
-        System.out.println(articleDtos);
-
-        return articleDtos;
+        return toDto.convert(articles);
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {

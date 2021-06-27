@@ -57,26 +57,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
-        //Naglasavamo browser-u da ne cache-ira podatke koje dobije u header-ima
-        //detaljnije: https://www.baeldung.com/spring-security-cache-control-headers
         httpSecurity.headers().cacheControl().disable();
-        //Neophodno da ne bi proveravali autentifikaciju kod Preflight zahteva
         httpSecurity.cors().configurationSource(corsConfigurationSource());
         httpSecurity.csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/user/{username}").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/{username}").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/sellers").permitAll()
                 .antMatchers(HttpMethod.POST,"/users/auth").permitAll()
-                .antMatchers(HttpMethod.POST, "/buyer/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/seller/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/buyer/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/seller/register").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/edit").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/changePass/{username}").permitAll()
-                .antMatchers(HttpMethod.GET,"/allArticles").permitAll()
-                .antMatchers(HttpMethod.GET,"/sellerArticles/{id}").permitAll()
+                .antMatchers(HttpMethod.GET,"/articles").permitAll()
+                .antMatchers(HttpMethod.GET,"/articles/{id}").permitAll()
                 .antMatchers(HttpMethod.GET,"/sellerArticles/{id}").permitAll()
                 .antMatchers(HttpMethod.GET,"/discounts/{id}").permitAll()
                 .antMatchers(HttpMethod.POST,"/postOrder").permitAll()

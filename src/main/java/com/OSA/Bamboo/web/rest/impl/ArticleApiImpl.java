@@ -7,6 +7,7 @@ import com.OSA.Bamboo.web.converter.ArticleDtoToArticle;
 import com.OSA.Bamboo.web.converter.ArticleToArticleDto;
 import com.OSA.Bamboo.web.rest.ArticleApi;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@Slf4j
 public class ArticleApiImpl implements ArticleApi {
 
     @Autowired
