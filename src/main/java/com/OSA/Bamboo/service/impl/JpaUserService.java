@@ -1,8 +1,11 @@
 package com.OSA.Bamboo.service.impl;
 
 import com.OSA.Bamboo.dto.UserPasswordChangeDto;
+import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
+import com.OSA.Bamboo.model.enums.UserRole;
+import com.OSA.Bamboo.repository.BuyerRepo;
 import com.OSA.Bamboo.repository.SellerRepo;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.service.UserService;
@@ -23,6 +26,9 @@ public class JpaUserService implements UserService {
 
     @Autowired
     private SellerRepo sellerRepo;
+
+    @Autowired
+    private BuyerRepo buyerRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -87,6 +93,34 @@ public class JpaUserService implements UserService {
             } else {
                 return false;
             }
+        }
+    }
+
+    @Override
+    public boolean registerSeller(Seller seller) {
+        Optional<User> user = userRepo.checkIfUserExists(seller.getUser().getUsername());
+        if (user.isPresent()) {
+            return false;
+        } else {
+            seller.getUser().setRole(UserRole.SELLER);
+            seller.getUser().setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
+            userRepo.save(seller.getUser());
+            sellerRepo.save(seller);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean registerBuyer(Buyer buyer) {
+        Optional<User> user = userRepo.checkIfUserExists(buyer.getUser().getUsername());
+        if (user.isPresent()) {
+            return false;
+        } else {
+            buyer.getUser().setRole(UserRole.BUYER);
+            buyer.getUser().setPassword(passwordEncoder.encode(buyer.getUser().getPassword()));
+            userRepo.save(buyer.getUser());
+            buyerRepo.save(buyer);
+            return true;
         }
     }
 }

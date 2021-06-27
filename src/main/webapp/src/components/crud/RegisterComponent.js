@@ -2,6 +2,7 @@ import React, {Component, useState} from "react";
 import {Redirect, useHistory} from "react-router-dom";
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import {UserService} from "../../service/UserService";
 
 export default function Register () {
 
@@ -28,14 +29,14 @@ export default function Register () {
         console.log(user)
     }
 
-    function registerUser () {
+    async function registerUser() {
         let name = document.getElementById('name').value;
         let lastName = document.getElementById('lastName').value;
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
         let address = document.getElementById('address').value;
 
-        if (user === 'buyer'){
+        if (user === 'buyer') {
             if (validateRegister(name, lastName, username, password, address, '', '')) {
                 let buyer = {
                     "username": username,
@@ -45,18 +46,16 @@ export default function Register () {
                     "address": address,
                 };
                 console.log(buyer)
-                fetch('http://localhost:8080/buyer/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(buyer),
-                })
-                    .then(response => response.json())
-                    .then(history.push('/login'))
-                    .catch((error) => {
-                        console.error('Error:', error);
-                });
+                await UserService.registerBuyer(buyer)
+                    .then((response) => response.data)
+                    .then(data =>{
+                        if (data === false)
+                            alert("A user with this username already exists !")
+                        else {
+                            alert("Succesfully registered !")
+                            window.location.assign("/login")
+                        }
+                    })
             }
         } else if (user === 'seller') {
             let sellerName = document.getElementById('sellerName').value;
@@ -64,28 +63,25 @@ export default function Register () {
 
             if (validateRegister(name, lastName, username, password, address, email, sellerName)) {
                 let seller = {
-                    "username":username,
+                    "username": username,
                     "blocked": false,
-                    "lastName":lastName,
-                    "name":name,
-                    "password":password,
-                    "address":address,
-                    "email":email,
-                    "sellerName":sellerName,
+                    "lastName": lastName,
+                    "name": name,
+                    "password": password,
+                    "address": address,
+                    "email": email,
+                    "sellerName": sellerName,
                 };
-                console.log(seller)
-                fetch('http://localhost:8080/seller/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(seller),
-                })
-                    .then(response => response.json())
-                    .then(history.push('/login'))
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                await UserService.registerSeller(seller)
+                    .then((response) => response.data)
+                    .then(data =>{
+                        if (data === false)
+                            alert("A user with this username already exists !")
+                        else {
+                            alert("Succesfully registered !")
+                            window.location.assign("/login")
+                        }
+                    })
             }
         }
     }

@@ -7,9 +7,7 @@ import com.OSA.Bamboo.dto.UserPasswordChangeDto;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
-import com.OSA.Bamboo.model.enums.UserRole;
 import com.OSA.Bamboo.repository.BuyerRepo;
-import com.OSA.Bamboo.repository.SellerRepo;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.security.TokenUtils;
 import com.OSA.Bamboo.service.UserService;
@@ -40,8 +38,6 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private SellerRepo sellerRepo;
 
     @Autowired
     private BuyerRepo buyerRepo;
@@ -67,34 +63,23 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     public ResponseEntity registerSeller(@Valid SellerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Seller seller = this.sellerToEntity.convert(dto);
-            seller.getUser().setRole(UserRole.SELLER);
-            seller.getUser().setPassword(passwordEncoder.encode(seller.getUser().getPassword()));
-            userRepo.save(seller.getUser());
-            sellerRepo.save(seller);
-            return new ResponseEntity<>(seller, HttpStatus.OK);
+            return new ResponseEntity<>(userService.registerSeller(seller), HttpStatus.OK);
         }
-
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity<Buyer> registerBuyer(@Valid BuyerDto dto) {
+    public ResponseEntity registerBuyer(@Valid BuyerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Buyer buyer = this.buyerToEntity.convert(dto);
-            buyer.getUser().setRole(UserRole.BUYER);
-            buyer.getUser().setPassword(passwordEncoder.encode(buyer.getUser().getPassword()));
-            userRepo.save(buyer.getUser());
-            buyerRepo.save(buyer);
-            return new ResponseEntity<>(buyer, HttpStatus.OK);
+            return new ResponseEntity(userService.registerBuyer(buyer), HttpStatus.OK);
         }
-
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
