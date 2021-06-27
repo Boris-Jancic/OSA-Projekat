@@ -17,6 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/users")
 public interface UserApi {
 
     @PostMapping(value = "/seller/register",
@@ -28,32 +29,31 @@ public interface UserApi {
     ResponseEntity<Buyer> registerBuyer(@Valid @RequestBody BuyerDto dto);
 
     @PermitAll
-    @PostMapping(value = "/users/auth",
+    @PostMapping(value = "/auth",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<String> login(@RequestBody AuthDto dto);
 
-    @GetMapping(value = "/user/{username}",
+    @GetMapping(value = "/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getUser(@PathVariable("username") String username);
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping(value = "/users",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(value = "/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getUsers();
 
-    @PreAuthorize("hasAnyRole('ROLE_BUYER')")
+    @PreAuthorize("hasRole('BUYER')")
     @GetMapping(value = "/sellers",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> getSellers();
 
-    @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER','ROLE_ADMIN')")
-    @PutMapping(value = "/user/changePass/{username}",
+    @PreAuthorize("hasAnyRole('BUYER', 'SELLER','ADMIN')")
+    @PutMapping(value = "/changePass/{username}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<Void> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
 
     @PreAuthorize("hasAnyRole('BUYER', 'SELLER','ADMIN')")
-    @PutMapping(value = "/user/edit",
+    @PutMapping(value = "/edit",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<User> updateUser(@Valid @RequestBody User user);

@@ -13,22 +13,23 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/orders")
 public interface OrderApi {
 
     @PreAuthorize("hasAuthority('ROLE_BUYER')")
-    @PostMapping(value = "/postOrder",
+    @PostMapping(value = "/add",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity postOrder(@Valid @RequestBody BuyerOrderDto dto);
 
     @PreAuthorize("hasAuthority('ROLE_BUYER')")
-    @PostMapping(value = "/postCartItem",
+    @PostMapping(value = "/add/article",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity postOrderedArticle(@Valid @RequestBody OrderedArticleDto dto);
 
     @PermitAll
-    @GetMapping(value = "/sellerComments/{username}",
+    @GetMapping(value = "/seller/comments/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity sellerComments(@PathVariable("username") String username);
 
@@ -37,12 +38,12 @@ public interface OrderApi {
     ResponseEntity sellerGrade(@PathVariable("username") String username);
 
     @PermitAll
-    @GetMapping(value = "/getBuyerOrders/{username}",
+    @GetMapping(value = "/buyer/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getOrders(@PathVariable("username") String username);
 
     @PreAuthorize("hasAnyRole('ROLE_BUYER', 'ROLE_SELLER')")
-    @PutMapping(value = "/updateOrder",
+    @PutMapping(value = "/update",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity updateOrder(@Valid @RequestBody BuyerOrder buyerOrder);

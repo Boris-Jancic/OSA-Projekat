@@ -11,10 +11,11 @@ import java.io.IOException;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/articles")
 public interface ArticleApi {
 
     @PreAuthorize("hasRole('SELLER')")
-    @RequestMapping(value = "/addArticle",
+    @RequestMapping(value = "/add",
             produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
     ResponseEntity<?> addArticle(@RequestParam("base64Image")String base64Image,
                                     @RequestParam("imgName") String imgName,
@@ -23,26 +24,25 @@ public interface ArticleApi {
                                     @RequestParam("price") String price,
                                     @RequestParam("sellerId") Long sellerId);
 
-    @GetMapping(value = "/allArticles",
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getAllArticles();
 
-    @GetMapping(value = "/sellerArticles/{id}",
+    @GetMapping(value = "/seller/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getSellerArticles(@PathVariable("id") Long id) throws IOException;
 
-    @GetMapping(value = "/getArticle/{id}",
+    @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getArticle(@PathVariable("id") Long id);
 
     @PreAuthorize("hasRole('SELLER')")
-    @PutMapping(value = "/updateArticle",
+    @PutMapping(value = "/update",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity updateArticle(@Valid @RequestBody Article article);
 
     @PreAuthorize("hasRole('SELLER')")
-    @DeleteMapping(value = "/deleteArticle/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     ResponseEntity<?> deleteArticle(@PathVariable("id") Long id);
 
 }
