@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -45,11 +44,9 @@ public class ArticleToArticleDto implements Converter<Article, ArticleDto> {
 
     public List<ArticleDto> convert(List<Article> articles) throws IOException {
 
-        List<ArticleDto> retVal = new ArrayList();
-        Iterator articleIterator = articles.iterator();
+        List<ArticleDto> retVal = new ArrayList<>();
 
-        while(articleIterator.hasNext()) {
-            Article a = (Article) articleIterator.next();
+        for (Article a : articles) {
             ArticleDto dto = this.convert(a);
             retVal.add(dto);
         }

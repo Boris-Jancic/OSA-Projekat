@@ -1,18 +1,13 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.dto.AuthDto;
-import com.OSA.Bamboo.dto.BuyerDto;
-import com.OSA.Bamboo.dto.SellerDto;
-import com.OSA.Bamboo.dto.UserPasswordChangeDto;
+import com.OSA.Bamboo.dto.*;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
-import com.OSA.Bamboo.repository.BuyerRepo;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.security.TokenUtils;
 import com.OSA.Bamboo.service.UserService;
-import com.OSA.Bamboo.web.converter.BuyerDtoToBuyer;
-import com.OSA.Bamboo.web.converter.SellerDtoToSeller;
+import com.OSA.Bamboo.web.converter.*;
 import com.OSA.Bamboo.web.rest.UserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,15 +34,8 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private UserRepo userRepo;
 
-
-    @Autowired
-    private BuyerRepo buyerRepo;
-
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private SellerDtoToSeller sellerToEntity;
 
     @Autowired
     private BuyerDtoToBuyer buyerToEntity;
@@ -63,18 +52,30 @@ public class UserApiImpl implements UserApi {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserDtoToUser userToEntity;
+
+    @Autowired
+    private UserToUserDto userToDto;
+
+    @Autowired
+    private SellerDtoToSeller sellerToEntity;
+
+    @Autowired
+    private SellerToSellerDto sellerToDto;
+
     @Override
-    public ResponseEntity registerSeller(@Valid SellerDto dto) {
+    public ResponseEntity<Void> registerSeller(@Valid SellerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Seller seller = this.sellerToEntity.convert(dto);
-            return new ResponseEntity<>(userService.registerSeller(seller), HttpStatus.OK);
+            return new ResponseEntity(userService.registerSeller(seller), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity registerBuyer(@Valid BuyerDto dto) {
+    public ResponseEntity<Void> registerBuyer(@Valid BuyerDto dto) {
         System.out.println(dto);
         if (dto != null) {
             Buyer buyer = this.buyerToEntity.convert(dto);
@@ -102,18 +103,19 @@ public class UserApiImpl implements UserApi {
         }
     }
 
-    public ResponseEntity getUser(String username) {
-        Optional<User> user = Optional.ofNullable(userRepo.findByUsername(username));
-        return user
-                .<ResponseEntity>map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
-
+    public ResponseEntity<UserDto> getUser(String username) {
+        Optional<User> user = Optional.ofNullable(userService.findByUsername(username));
+        if (user.isPresent()) {
+            UserDto dto = userToDto.convert(user.get());
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public ResponseEntity getUsers() {
-        List<User> users = userRepo.getAllUsersExeptAdmins();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<UserDto> getUsers() throws IOException {
+        List<UserDto> users = userToDto.convert(userRepo.getAllUsersExeptAdmins());
+        return new ResponseEntity(users, HttpStatus.OK);
     }
 
     @Override
@@ -123,26 +125,26 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
-    public ResponseEntity<Void> changePassword(UserPasswordChangeDto dto) {
+    public ResponseEntity changePassword(UserPasswordChangeDto dto) {
         if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             boolean result;
             try {
                 result = this.userService.changePassword(dto);
             } catch (EntityNotFoundException var5) {
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
-    public ResponseEntity<User> updateUser(@Valid User user) {
+    public ResponseEntity<User> updateUser(@Valid UserDto dto) {
+        User user = userToEntity.convert(dto);
         if (user != null) {
-            System.out.println(user);
-            userRepo.save(user);
+            userService.save(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
