@@ -31,12 +31,17 @@ export class UserTable extends Component {
     }
 
     handleAction(user) {
-        if (user.blocked === false)
+        let btn = document.getElementById('btn' + user.id)
+
+        if (user.blocked === false) {
+            btn.innerText = "Unblock"
             user.blocked = true
-        else
+        } else {
+            btn.innerText = "Block"
             user.blocked = false
+        }
+
         UserService.editUser(user)
-        window.location.reload()
     }
 
 
@@ -66,11 +71,11 @@ export class UserTable extends Component {
                                     <TableCell align={"center"}>
 
                                         {(row.blocked === false) ? (
-                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary" onClick={() => this.handleAction(row)}>
                                                 Block
                                             </Button>
                                         ) : (
-                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary" onClick={() => this.handleAction(row)}>
                                                 Unblock
                                             </Button>
                                         )}

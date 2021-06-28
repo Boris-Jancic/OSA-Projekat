@@ -35,7 +35,7 @@ class OrderTable extends Component {
                 delivered: false,
                 grade: 0,
                 hourlyRate: "",
-                user: "tada" ,
+                user: "" ,
             },
             open: false,
             fullWidth: true,
@@ -43,16 +43,12 @@ class OrderTable extends Component {
         };
     }
 
-    handleFullWidthChange = (event) => {
-        this.setState({fullWidth: event.target.checked})
-    };
-
     componentDidMount() {
         const username = TokenService.decodeToken(TokenService.getToken()).sub
         OrderService.getOrders(username)
             .then((response) => response.data)
-            .then(orderData => {
-                this.setState({ orders: orderData });
+            .then(data => {
+                this.setState({ orders: data });
             });
     }
 
@@ -73,11 +69,13 @@ class OrderTable extends Component {
         this.state.order.anonymousComment = this.state.anonymous
 
         this.setState({open: false})
+
         for (let i=0; i < this.state.orders.length; i++) {
             if (this.state.orders[i].delivered === true) {
                 this.state.orders.splice(i, 1)
             }
         }
+
         await OrderService.putOrder(this.state.order)
     }
 
@@ -86,7 +84,6 @@ class OrderTable extends Component {
     }
 
     render() {
-        console.log(this.state.orders)
         return(
             <div className="form-table">
                 <TableContainer component={Paper}>
@@ -105,13 +102,13 @@ class OrderTable extends Component {
                                     <TableCell align={"center"}>{row.id}</TableCell>
                                     <TableCell align={"center"}>{row.hourlyRate}</TableCell>
                                     <TableCell align={"center"}>
-
-                                    <Button variant="contained" color="primary" onClick={() => this.handleClickOpen(row)}>
-                                        Set delivered status
-                                    </Button>
+                                        <Button variant="contained" color="primary" onClick={() => this.handleClickOpen(row)}>
+                                            Set delivered status
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
+
                         </TableBody>
                     </Table>
                 </TableContainer>

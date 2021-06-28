@@ -67,9 +67,7 @@ export class DiscountTable extends Component{
     }
 
     checkDatesValid(fromDate, tillDate) {
-        if (fromDate < tillDate)
-            return true
-        return false
+        return fromDate < tillDate;
     }
 
     handleAction = async () => {
