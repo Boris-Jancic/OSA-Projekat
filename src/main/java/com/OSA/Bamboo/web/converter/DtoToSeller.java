@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public class SellerDtoToSeller implements Converter<SellerDto, Seller> {
+public class DtoToSeller implements Converter<SellerDto, Seller> {
 
     @Autowired
     private UserRepo userRepo;
 
-    public SellerDtoToSeller() {
+    public DtoToSeller() {
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 
-public class UserToUserDto implements Converter<User, UserDto> {
+public class UserToDto implements Converter<User, UserDto> {
     @Override
     public UserDto convert(User user) {
         UserDto dto = new UserDto();

@@ -13,9 +13,9 @@ import java.util.Base64;
 import java.util.List;
 
 @Component
-public class ArticleToArticleDto implements Converter<Article, ArticleDto> {
+public class ArticleToDto implements Converter<Article, ArticleDto> {
     private final String imageDirectory = System.getProperty("user.dir") + "/images/";
-    public ArticleToArticleDto() {
+    public ArticleToDto() {
     }
 
     @Override

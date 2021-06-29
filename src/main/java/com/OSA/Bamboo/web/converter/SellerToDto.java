@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SellerToSellerDto implements Converter<Seller, SellerDto> {
-    public SellerToSellerDto() {
+public class SellerToDto implements Converter<Seller, SellerDto> {
+    public SellerToDto() {
     }
 
     @Override

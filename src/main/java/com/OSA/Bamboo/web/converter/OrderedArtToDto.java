@@ -6,7 +6,7 @@ import com.OSA.Bamboo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
-public class OrderedArtToOrderedArtDto implements Converter<OrderedArticle, OrderedArticleDto> {
+public class OrderedArtToDto implements Converter<OrderedArticle, OrderedArticleDto> {
 
     @Autowired
     private ArticleService articleService;

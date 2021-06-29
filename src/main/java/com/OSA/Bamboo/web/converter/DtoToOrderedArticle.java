@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class OrderedArtDtoToOrderedArt implements Converter<OrderedArticleDto, OrderedArticle> {
+public class DtoToOrderedArticle implements Converter<OrderedArticleDto, OrderedArticle> {
 
     @Autowired
     private ArticleService articleService;

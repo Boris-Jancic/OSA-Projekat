@@ -9,7 +9,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DiscountDtoToDiscount implements Converter<DiscountDto, Discount> {
+public class DtoToDiscount implements Converter<DiscountDto, Discount> {
 
     @Autowired
     private ArticleService articleService;

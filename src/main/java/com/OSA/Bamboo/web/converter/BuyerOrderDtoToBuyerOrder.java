@@ -19,6 +19,7 @@ public class BuyerOrderDtoToBuyerOrder implements Converter<BuyerOrderDto, Buyer
     public BuyerOrder convert(BuyerOrderDto dto) {
         BuyerOrder buyerOrder = new BuyerOrder();
 
+        buyerOrder.setId(dto.getId());
         buyerOrder.setComment(dto.getComment());
         buyerOrder.setAnonymousComment(dto.isAnonymousComment());
         buyerOrder.setArchivedComment(dto.isArchivedComment());
@@ -26,6 +27,7 @@ public class BuyerOrderDtoToBuyerOrder implements Converter<BuyerOrderDto, Buyer
         buyerOrder.setGrade(dto.getGrade());
         buyerOrder.setHourlyRate(LocalDate.now());
         buyerOrder.setUser(dto.getUsername());
+
         return buyerOrder;
     }
 }

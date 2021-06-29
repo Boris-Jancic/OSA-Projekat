@@ -4,7 +4,7 @@ import com.OSA.Bamboo.web.dto.BuyerOrderDto;
 import com.OSA.Bamboo.model.BuyerOrder;
 import org.springframework.core.convert.converter.Converter;
 
-public class BuyerOrderToBuyerOrderDto implements Converter<BuyerOrder, BuyerOrderDto> {
+public class BuyerOrderToDto implements Converter<BuyerOrder, BuyerOrderDto> {
     @Override
     public BuyerOrderDto convert(BuyerOrder buyerOrder) {
         BuyerOrderDto dto = new BuyerOrderDto();

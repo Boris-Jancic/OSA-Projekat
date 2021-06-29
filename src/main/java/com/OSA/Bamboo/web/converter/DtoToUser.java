@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserDtoToUser implements Converter<UserDto, User> {
+public class DtoToUser implements Converter<UserDto, User> {
     @Override
     public User convert(UserDto dto) {
         User user = new User();

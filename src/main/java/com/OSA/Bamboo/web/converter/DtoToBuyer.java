@@ -7,8 +7,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BuyerDtoToBuyer implements Converter<BuyerDto, Buyer> {
-    public BuyerDtoToBuyer() {
+public class DtoToBuyer implements Converter<BuyerDto, Buyer> {
+    public DtoToBuyer() {
     }
     
     @Override
