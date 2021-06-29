@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.OrderedArticleDto;
+import com.OSA.Bamboo.web.dto.OrderedArticleDto;
 import com.OSA.Bamboo.model.OrderedArticle;
 import com.OSA.Bamboo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;

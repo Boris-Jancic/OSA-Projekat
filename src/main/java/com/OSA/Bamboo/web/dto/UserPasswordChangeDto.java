@@ -1,4 +1,4 @@
-package com.OSA.Bamboo.dto;
+package com.OSA.Bamboo.web.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

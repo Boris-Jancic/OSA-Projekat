@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.web.rest;
 
-import com.OSA.Bamboo.dto.BuyerOrderDto;
-import com.OSA.Bamboo.dto.OrderedArticleDto;
+import com.OSA.Bamboo.web.dto.BuyerOrderDto;
+import com.OSA.Bamboo.web.dto.OrderedArticleDto;
 import com.OSA.Bamboo.model.BuyerOrder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

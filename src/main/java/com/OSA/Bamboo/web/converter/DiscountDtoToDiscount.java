@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.DiscountDto;
+import com.OSA.Bamboo.web.dto.DiscountDto;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.service.ArticleService;

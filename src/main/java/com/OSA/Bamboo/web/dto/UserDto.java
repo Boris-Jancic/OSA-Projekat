@@ -1,4 +1,4 @@
-package com.OSA.Bamboo.dto;
+package com.OSA.Bamboo.web.dto;
 
 import com.OSA.Bamboo.model.enums.UserRole;
 import lombok.AllArgsConstructor;

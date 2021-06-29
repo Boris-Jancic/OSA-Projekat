@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dto.ArticleDto;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.repository.ArticleRepo;

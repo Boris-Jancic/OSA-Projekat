@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.dto.BuyerOrderDto;
-import com.OSA.Bamboo.dto.OrderedArticleDto;
+import com.OSA.Bamboo.web.dto.BuyerOrderDto;
+import com.OSA.Bamboo.web.dto.OrderedArticleDto;
 import com.OSA.Bamboo.model.BuyerOrder;
 import com.OSA.Bamboo.model.OrderedArticle;
 import com.OSA.Bamboo.service.ArticleService;

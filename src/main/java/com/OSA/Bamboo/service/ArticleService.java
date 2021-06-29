@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.service;
 
-import com.OSA.Bamboo.dto.ArticleDto;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 
 import java.io.IOException;

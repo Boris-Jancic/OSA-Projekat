@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.rest;
 
-import com.OSA.Bamboo.dto.DiscountDto;
+import com.OSA.Bamboo.web.dto.DiscountDto;
 import com.OSA.Bamboo.model.Discount;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

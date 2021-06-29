@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.UserDto;
+import com.OSA.Bamboo.web.dto.UserDto;
 import com.OSA.Bamboo.model.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

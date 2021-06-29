@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.BuyerOrderDto;
+import com.OSA.Bamboo.web.dto.BuyerOrderDto;
 import com.OSA.Bamboo.model.BuyerOrder;
 import org.springframework.core.convert.converter.Converter;
 

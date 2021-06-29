@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dto.UserPasswordChangeDto;
+import com.OSA.Bamboo.web.dto.UserPasswordChangeDto;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;

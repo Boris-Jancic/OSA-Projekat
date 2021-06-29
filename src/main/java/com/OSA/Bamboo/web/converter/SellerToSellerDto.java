@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.SellerDto;
+import com.OSA.Bamboo.web.dto.SellerDto;
 import com.OSA.Bamboo.model.Seller;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

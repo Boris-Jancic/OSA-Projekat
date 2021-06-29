@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.SellerDto;
+import com.OSA.Bamboo.web.dto.SellerDto;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
 import com.OSA.Bamboo.repository.UserRepo;

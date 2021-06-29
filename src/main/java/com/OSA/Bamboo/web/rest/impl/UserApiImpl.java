@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.dto.*;
+import com.OSA.Bamboo.web.dto.*;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
