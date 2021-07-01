@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.web.dto.UserDto;
 import com.OSA.Bamboo.model.User;
+import com.OSA.Bamboo.web.dto.UserDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,6 @@ public class UserToDto implements Converter<User, UserDto> {
 
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());
         dto.setName(user.getName());
         dto.setLastName(user.getLastName());
         dto.setBlocked(user.isBlocked());

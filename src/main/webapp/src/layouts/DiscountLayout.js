@@ -5,7 +5,7 @@ const DiscountLayout = () => {
     return (
         <>
             <div className="content-box">
-                <DiscountTable />
+                <DiscountTable/>
             </div>
         </>
     )

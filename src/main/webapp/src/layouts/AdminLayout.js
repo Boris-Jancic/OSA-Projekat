@@ -5,7 +5,7 @@ const AdminLayout = () => {
     return (
         <>
             <div className="content-box">
-                <UserTable />
+                <UserTable/>
             </div>
         </>
     )

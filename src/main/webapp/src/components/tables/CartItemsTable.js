@@ -3,7 +3,6 @@ import {classes} from "istanbul-lib-coverage";
 import Button from "@material-ui/core/Button";
 import React, {useEffect, useState} from "react";
 import {ArticleService} from "../../service/ArticleService";
-import {border, width} from "@material-ui/system";
 import {OrderService} from "../../service/OrderService";
 import {TokenService} from "../../service/TokenService";
 
@@ -12,8 +11,9 @@ export default function CartItemsTable() {
     const [articles, setArticles] = useState([])
     const [orderArticles, setOrderArticles] = useState([])
     const [finalPrice, setFinalPrice] = useState(0)
+    const username = TokenService.decodeToken(TokenService.getToken()).sub
 
-    useEffect( () => {
+    useEffect(() => {
         fetchCartArticles()
     }, [])
 
@@ -45,16 +45,12 @@ export default function CartItemsTable() {
         setArticles(articlesData)
     }
 
-    function remove(row) {
-        articles.pop(row)
-    }
-
     async function order() {
-        const username = TokenService.decodeToken(TokenService.getToken()).sub
         const order = {
             'delivered': false,
             'grade': 0,
             'comment': "awaiting grade",
+            'hourlyRate': "",
             'username': username,
             'anonymousComment': false,
             'archivedComment': false
@@ -72,7 +68,7 @@ export default function CartItemsTable() {
         window.location.assign("/sellers");
     }
 
-    return(
+    return (
         <>
             <div className="form-table">
                 <TableContainer component={Paper}>

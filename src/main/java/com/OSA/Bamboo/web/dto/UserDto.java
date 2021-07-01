@@ -19,11 +19,9 @@ public class UserDto {
 
     @NotNull
     private Long id;
-    @NotBlank(message = "LastName is mandatory")
+    @NotBlank(message = "Username is mandatory")
     private String username;
-    @NotBlank(message = "LastName is mandatory")
-    private String password;
-    @NotBlank(message = "LastName is mandatory")
+    @NotBlank(message = "Name is mandatory")
     private String name;
     @NotBlank(message = "LastName is mandatory")
     private String lastName;

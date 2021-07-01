@@ -1,9 +1,9 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.web.dto.SellerDto;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
 import com.OSA.Bamboo.repository.UserRepo;
+import com.OSA.Bamboo.web.dto.SellerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,6 @@ package com.OSA.Bamboo.web.rest;
 
 import com.OSA.Bamboo.web.dto.BuyerOrderDto;
 import com.OSA.Bamboo.web.dto.OrderedArticleDto;
-import com.OSA.Bamboo.model.BuyerOrder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -31,7 +31,7 @@ public interface OrderApi {
     @PermitAll
     @GetMapping(value = "/seller/comments/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity sellerComments(@PathVariable("username") String username);
+    ResponseEntity sellerComments(@PathVariable("username") String username) throws IOException;
 
     @GetMapping(value = "/seller/grade/{username}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -46,5 +46,5 @@ public interface OrderApi {
     @PutMapping(value = "/update",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity updateOrder(@Valid @RequestBody BuyerOrder buyerOrder);
+    ResponseEntity updateOrder(@Valid @RequestBody BuyerOrderDto dto);
 }

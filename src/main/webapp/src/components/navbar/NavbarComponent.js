@@ -1,26 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {Navbar, Nav} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 import {TokenService} from "../../service/TokenService";
 import {AuthenticationService} from "../../service/clients/AuthenticationService";
-import {createMuiTheme, Link, MuiThemeProvider} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {lightBlue} from "@material-ui/core/colors";
 import logo from '../../static/images/logo.svg'
 import {UserService} from "../../service/UserService";
-import AxiosClient from "../../service/clients/AxiosClient";
 
-function NavbarComponent () {
+function NavbarComponent() {
     const [browseUrl, setBrowseUrl] = useState('')
     const [commentsUrl, setCommentsUrl] = useState('')
-    const [discountUrl, setDiscountUrl] = useState('')
     const [hasError, setError] = useState()
-
 
     useEffect(() => {
         fetchUser()
             .catch(err => setError(err));
-    },[])
+    }, [])
 
     async function fetchUser() {
         const username = TokenService.decodeToken(TokenService.getToken()).sub
@@ -29,10 +24,6 @@ function NavbarComponent () {
         setCommentsUrl("/seller/" + user.data.username)
         localStorage.setItem('sellerId', user.data.id)
     }
-
-    console.log(browseUrl)
-    console.log(commentsUrl)
-    console.log(discountUrl)
 
     return (
         <>

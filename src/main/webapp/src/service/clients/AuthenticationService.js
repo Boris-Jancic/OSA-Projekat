@@ -1,5 +1,5 @@
 import AxiosClient from "./AxiosClient";
-import { TokenService } from "../TokenService";
+import {TokenService} from "../TokenService";
 
 export const AuthenticationService = {
     login,
@@ -10,17 +10,23 @@ export const AuthenticationService = {
 async function login(userCredentials) {
     console.log(userCredentials)
     try {
-        const response = await AxiosClient.post(
-            "http://localhost:8080/users/auth",
-            userCredentials
-        );
-        const decoded_token = TokenService.decodeToken(response.data);
-        if (decoded_token) {
-            TokenService.setToken(response.data);
-            window.location.assign("/home");
-        } else {
-            console.error("Invalid token");
-        }
+        await AxiosClient.post("http://localhost:8080/users/auth", userCredentials)
+            .then(function (response) {
+                const decoded_token = TokenService.decodeToken(response.data);
+                if (decoded_token) {
+                    TokenService.setToken(response.data);
+                    window.location.assign("/home");
+                } else {
+                    console.error("Invalid token");
+                }
+            })
+            .catch(function (error) {
+                if (error.response.status === 403)
+                    alert("You are blocked from using bamboo")
+                if (error.response.status === 404)
+                    alert("Wrong password or username")
+        })
+
     } catch (error) {
         console.error(error);
     }

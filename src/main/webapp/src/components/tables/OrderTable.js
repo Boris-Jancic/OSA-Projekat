@@ -1,26 +1,24 @@
-
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {
     Checkbox,
-    Dialog, DialogActions,
-    DialogContent, DialogTitle, FormControlLabel,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField
+    TableRow,
+    TextField
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
-import {UserService} from "../../service/UserService";
-import {ArticleService} from "../../service/ArticleService";
 import {OrderService} from "../../service/OrderService";
 import {TokenService} from "../../service/TokenService";
-import {CheckBox} from "@material-ui/icons";
-import Switch from "react-bootstrap/Switch";
-import {number} from "prop-types";
 
 class OrderTable extends Component {
     constructor(props) {
@@ -35,7 +33,7 @@ class OrderTable extends Component {
                 delivered: false,
                 grade: 0,
                 hourlyRate: "",
-                user: "" ,
+                username: "",
             },
             open: false,
             fullWidth: true,
@@ -48,7 +46,7 @@ class OrderTable extends Component {
         OrderService.getOrders(username)
             .then((response) => response.data)
             .then(data => {
-                this.setState({ orders: data });
+                this.setState({orders: data});
             });
     }
 
@@ -57,7 +55,9 @@ class OrderTable extends Component {
         this.setState({order: order})
     };
 
-    handleClose = () => {this.setState({open: false})};
+    handleClose = () => {
+        this.setState({open: false})
+    };
 
     handleAction = async () => {
         let comment = document.getElementById('comment').value
@@ -70,7 +70,7 @@ class OrderTable extends Component {
 
         this.setState({open: false})
 
-        for (let i=0; i < this.state.orders.length; i++) {
+        for (let i = 0; i < this.state.orders.length; i++) {
             if (this.state.orders[i].delivered === true) {
                 this.state.orders.splice(i, 1)
             }
@@ -84,7 +84,7 @@ class OrderTable extends Component {
     }
 
     render() {
-        return(
+        return (
             <div className="form-table">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -102,7 +102,8 @@ class OrderTable extends Component {
                                     <TableCell align={"center"}>{row.id}</TableCell>
                                     <TableCell align={"center"}>{row.hourlyRate}</TableCell>
                                     <TableCell align={"center"}>
-                                        <Button variant="contained" color="primary" onClick={() => this.handleClickOpen(row)}>
+                                        <Button variant="contained" color="primary"
+                                                onClick={() => this.handleClickOpen(row)}>
                                             Set delivered status
                                         </Button>
                                     </TableCell>
@@ -125,7 +126,7 @@ class OrderTable extends Component {
                             label="Comment"
                             type="text"
                         />
-                        <br />
+                        <br/>
                         <TextField
                             fullWidth={this.state.fullWidth}
                             autoFocus
@@ -136,11 +137,11 @@ class OrderTable extends Component {
                             min={1}
                             max={5}
                         />
-                        <br />
+                        <br/>
                         <FormControlLabel
                             value="end"
                             id="anonymous"
-                            control={<Checkbox color="success" />}
+                            control={<Checkbox color="success"/>}
                             onChange={this.handleCheckBoxChange}
                             label="Anonymous comment"
                             labelPlacement="end"

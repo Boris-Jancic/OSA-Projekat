@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,7 @@ import java.util.List;
 @Component
 public class ArticleToDto implements Converter<Article, ArticleDto> {
     private final String imageDirectory = System.getProperty("user.dir") + "/images/";
+
     public ArticleToDto() {
     }
 

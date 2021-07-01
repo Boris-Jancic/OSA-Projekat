@@ -3,24 +3,12 @@ import {UserService} from "../../service/UserService";
 import {useParams} from "react-router-dom";
 import {OrderService} from "../../service/OrderService";
 import {classes} from "istanbul-lib-coverage";
-import {
-    Card,
-    CardActions,
-    CardContent,
-    Checkbox,
-    DialogContent,
-    FormControlLabel,
-    Grid,
-    Typography
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import {Card, CardActions, CardContent, Checkbox, FormControlLabel, Grid, Typography} from "@material-ui/core";
 import {AuthenticationService} from "../../service/clients/AuthenticationService";
-import {Nav} from "react-bootstrap";
-import Switch from "react-bootstrap/Switch";
 
 export default function SellerProfile() {
-    const[seller, setSeller] = useState({})
-    const[comments, setComments] = useState([])
+    const [seller, setSeller] = useState({})
+    const [comments, setComments] = useState([])
     const [hasError, setError] = useState()
 
     const {username} = useParams();
@@ -30,17 +18,17 @@ export default function SellerProfile() {
             .catch(err => setError(err))
         fetchComments()
             .catch(err => setError(err));
-    },[])
+    }, [])
 
     const fetchSeller = async () => {
-        const sellerData =  await UserService.getUser(username)
+        const sellerData = await UserService.getUser(username)
         setSeller(sellerData.data)
     }
 
     const fetchComments = async () => {
         const commentsData = (await OrderService.getSellerComments(username)).data
         if (AuthenticationService.getRole() === "ROLE_BUYER") {
-            for (let i=0; i < commentsData.length; i++) {
+            for (let i = 0; i < commentsData.length; i++) {
                 if (commentsData[i].archivedComment === true) {
                     commentsData.splice(i, 1)
                 }
@@ -57,7 +45,7 @@ export default function SellerProfile() {
         await OrderService.putOrder(comment)
     }
 
-    return(
+    return (
         <div className={classes.root} className="card-view">
             <h2> Seller grade: {localStorage.getItem("GRADE")} </h2>
             <Grid
@@ -72,22 +60,22 @@ export default function SellerProfile() {
                         <Card>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="h1">
-                                    { elem.anonymousComment === true && (
+                                    {elem.anonymousComment === true && (
                                         "Anonymous user"
                                     )}
-                                    { elem.anonymousComment === false && (
-                                        elem.user
+                                    {elem.anonymousComment === false && (
+                                        elem.username
                                     )}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="h2">
-                                    <hr />
+                                    <hr/>
                                     {elem.comment}
-                                    <hr />
-                                    <h4> Grade: <u> {elem.grade} </u> </h4>
+                                    <hr/>
+                                    <h4> Grade: <u> {elem.grade} </u></h4>
                                 </Typography>
-                                <hr />
+                                <hr/>
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    Date of delivery :  {elem.hourlyRate}
+                                    Date of delivery : {elem.hourlyRate}
                                 </Typography>
                             </CardContent>
 
@@ -100,10 +88,6 @@ export default function SellerProfile() {
                                         label="Archived"
                                         labelPlacement="end"
                                     />
-                                    // <FormControlLabel
-                                    // control={<Switch checked={checked} onChange={toggleChecked} />}
-                                    // label="Normal"
-                                    // />
                                 )}
                             </CardActions>
                         </Card>

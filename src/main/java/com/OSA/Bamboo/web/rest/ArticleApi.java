@@ -1,6 +1,6 @@
 package com.OSA.Bamboo.web.rest;
 
-import com.OSA.Bamboo.model.Article;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,15 +17,15 @@ public interface ArticleApi {
     @PreAuthorize("hasRole('SELLER')")
     @RequestMapping(value = "/add",
             produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
-    ResponseEntity<?> addArticle(@RequestParam("base64Image")String base64Image,
-                                    @RequestParam("imgName") String imgName,
-                                    @RequestParam("name") String name,
-                                    @RequestParam("description") String description,
-                                    @RequestParam("price") String price,
-                                    @RequestParam("sellerId") Long sellerId);
+    ResponseEntity<?> addArticle(@RequestParam("base64Image") String base64Image,
+                                 @RequestParam("imgName") String imgName,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("price") String price,
+                                 @RequestParam("sellerId") Long sellerId);
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getAllArticles();
+    ResponseEntity getAllArticles() throws IOException;
 
     @GetMapping(value = "/seller/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -39,7 +39,7 @@ public interface ArticleApi {
     @PutMapping(value = "/update",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity updateArticle(@Valid @RequestBody Article article);
+    ResponseEntity updateArticle(@Valid @RequestBody ArticleDto article);
 
     @PreAuthorize("hasRole('SELLER')")
     @DeleteMapping(value = "/delete/{id}")

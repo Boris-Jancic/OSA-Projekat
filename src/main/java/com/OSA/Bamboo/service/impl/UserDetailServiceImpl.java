@@ -25,7 +25,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         User user = userService.findByUsername(username);
 
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("There is no user with username " + username);
         } else {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

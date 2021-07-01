@@ -1,6 +1,9 @@
 package com.OSA.Bamboo.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
@@ -15,7 +18,7 @@ public class SellerDto {
 
     @NotBlank(message = "Password is mandatory")
     private String password;
-    
+
     @NotBlank(message = "Name is mandatory")
     private String name;
 

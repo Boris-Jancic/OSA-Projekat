@@ -2,9 +2,7 @@ import {useState} from "react";
 import {useHistory} from "react-router-dom";
 import {ArticleService} from "../../service/ArticleService";
 import {UserService} from "../../service/UserService";
-import {AuthenticationService} from "../../service/clients/AuthenticationService";
 import {TokenService} from "../../service/TokenService";
-import {number} from "prop-types";
 
 export default function AddArticle() {
     const [selectedImg, setSelectedImg] = useState({})
@@ -57,7 +55,8 @@ export default function AddArticle() {
             alert("Make sure to fill out all the fields !")
         }
     }
-    return(
+
+    return (
         <div style={divStyle}>
             <form className="form-size" method="POST">
                 <h1>Add article</h1>
@@ -67,7 +66,7 @@ export default function AddArticle() {
                 <input className="form-control input-margin" id="price" type="number" placeholder="Price"/>
                 <input accept="image/*" className="form-control input-margin"
                        id="picture" type="file" onChange={(e) => fileSelectedHandler(e)}/>
-                <input className="form-control btn input-margin" onClick={addArticle} value="Submit" />
+                <input className="form-control btn input-margin" onClick={addArticle} value="Submit"/>
             </form>
         </div>
     )

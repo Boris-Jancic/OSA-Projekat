@@ -1,7 +1,7 @@
 package com.OSA.Bamboo.web.rest;
 
-import com.OSA.Bamboo.web.dto.*;
 import com.OSA.Bamboo.model.User;
+import com.OSA.Bamboo.web.dto.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +47,7 @@ public interface UserApi {
     @PutMapping(value = "/changePass/{username}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<Void> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
+    ResponseEntity<Boolean> changePassword(@Valid @RequestBody UserPasswordChangeDto dto);
 
     @PreAuthorize("hasAnyRole('BUYER', 'SELLER','ADMIN')")
     @PutMapping(value = "/edit",

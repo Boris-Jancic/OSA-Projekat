@@ -1,6 +1,5 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.web.dto.*;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
@@ -8,6 +7,7 @@ import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.security.TokenUtils;
 import com.OSA.Bamboo.service.UserService;
 import com.OSA.Bamboo.web.converter.*;
+import com.OSA.Bamboo.web.dto.*;
 import com.OSA.Bamboo.web.rest.UserApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +38,7 @@ public class UserApiImpl implements UserApi {
     private UserService userService;
 
     @Autowired
-    private BuyerDtoToBuyer buyerToEntity;
+    private DtoToBuyer buyerToEntity;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -53,16 +53,16 @@ public class UserApiImpl implements UserApi {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDtoToUser userToEntity;
+    private DtoToUser userToEntity;
 
     @Autowired
-    private UserToUserDto userToDto;
+    private UserToDto userToDto;
 
     @Autowired
-    private SellerDtoToSeller sellerToEntity;
+    private DtoToSeller sellerToEntity;
 
     @Autowired
-    private SellerToSellerDto sellerToDto;
+    private SellerToDto sellerToDto;
 
     @Override
     public ResponseEntity<Void> registerSeller(@Valid SellerDto dto) {
@@ -87,20 +87,23 @@ public class UserApiImpl implements UserApi {
     @Override
     public ResponseEntity<String> login(@RequestBody AuthDto dto) {
         User user = userRepo.findByUsername(dto.getUsername());
-        if (!user.isBlocked()) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
-            Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (user != null) {
+            if (!user.isBlocked()) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+                Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            try {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(dto.getUsername());
-                return ResponseEntity.ok(this.tokenUtils.generateToken(userDetails));
-            } catch (Exception var5) {
-                return ResponseEntity.notFound().build();
+                try {
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(dto.getUsername());
+                    return ResponseEntity.ok(this.tokenUtils.generateToken(userDetails));
+                } catch (Exception var5) {
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                return new ResponseEntity<>("", HttpStatus.FORBIDDEN);
             }
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<UserDto> getUser(String username) {
@@ -127,23 +130,21 @@ public class UserApiImpl implements UserApi {
     @Override
     public ResponseEntity changePassword(UserPasswordChangeDto dto) {
         if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         } else {
-            boolean result;
             try {
-                result = this.userService.changePassword(dto);
+                return new ResponseEntity<>(userService.changePassword(dto), HttpStatus.OK);
             } catch (EntityNotFoundException var5) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
             }
-
-            return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
     public ResponseEntity<User> updateUser(@Valid UserDto dto) {
-        User user = userToEntity.convert(dto);
+        User user = userService.findByUsername(dto.getUsername());
         if (user != null) {
+            user.setBlocked(dto.isBlocked());
             userService.save(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }

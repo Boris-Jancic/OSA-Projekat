@@ -1,10 +1,10 @@
 package com.OSA.Bamboo.web.rest.impl;
 
 
-import com.OSA.Bamboo.web.dto.DiscountDto;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.service.DiscountService;
-import com.OSA.Bamboo.web.converter.DiscountDtoToDiscount;
+import com.OSA.Bamboo.web.converter.DtoToDiscount;
+import com.OSA.Bamboo.web.dto.DiscountDto;
 import com.OSA.Bamboo.web.rest.DiscountApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.List;
 public class DiscountApiImpl implements DiscountApi {
 
     @Autowired
-    private DiscountDtoToDiscount toEntity;
+    private DtoToDiscount toEntity;
 
     @Autowired
     private DiscountService discountService;

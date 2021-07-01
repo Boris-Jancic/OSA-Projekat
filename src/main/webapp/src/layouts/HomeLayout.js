@@ -9,7 +9,7 @@ const HomeLayout = () => {
     return (
         <div style={divStyle}>
             <div className="home-header">
-                <h1>Welcome to <i><u>Bamboo</u></i><img src={logo} width={50} /></h1>
+                <h1>Welcome to <i><u>Bamboo</u></i><img src={logo} width={50}/></h1>
                 <h3> we sell the best bikes in the neighbourhood</h3>
             </div>
         </div>

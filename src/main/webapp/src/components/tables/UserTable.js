@@ -1,10 +1,8 @@
-
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
 import {UserService} from "../../service/UserService";
-import {ArticleService} from "../../service/ArticleService";
 import {TokenService} from "../../service/TokenService";
 
 export class UserTable extends Component {
@@ -47,7 +45,7 @@ export class UserTable extends Component {
 
     render() {
         console.log(this.state.users)
-        return(
+        return (
             <div className="form-table">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -71,14 +69,17 @@ export class UserTable extends Component {
                                     <TableCell align={"center"}>
 
                                         {(row.blocked === false) ? (
-                                            <Button id={"btn" + row.id} variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary"
+                                                    onClick={() => this.handleAction(row)}>
                                                 Block
                                             </Button>
                                         ) : (
-                                            <Button id={"btn" + row.id} variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary"
+                                                    onClick={() => this.handleAction(row)}>
                                                 Unblock
                                             </Button>
                                         )}
+
                                     </TableCell>
                                 </TableRow>
                             ))}

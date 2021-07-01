@@ -41,6 +41,5 @@ async function editUser(user) {
 }
 
 async function changePassword(userPasswordChange) {
-    console.log(userPasswordChange)
     return await AxiosClient.put("http://localhost:8080/users/changePass/" + userPasswordChange.username, userPasswordChange);
 }

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {useParams, useHistory } from "react-router-dom";
-import {CardActions, TextField} from "@material-ui/core";
+import {useHistory, useParams} from "react-router-dom";
+import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {CheckBox} from "@material-ui/icons";
 
-export default function EditArticle () {
+export default function EditArticle() {
 
     const [article, setArticle] = useState({
         id: '',
-        name:'',
+        name: '',
         description: '',
         price: '',
         imageName: ''
@@ -28,7 +28,7 @@ export default function EditArticle () {
         fetchArticle()
             .then(res => setArticle(res))
             .catch(err => setError(err));
-    },[])
+    }, [])
 
     function editArticle() {
         const name = document.getElementById("name").value
@@ -60,17 +60,19 @@ export default function EditArticle () {
         setArticle(articleChanged)
     }
 
-    return(
+    return (
         <div style={divStyle}>
             <div className="form-size">
                 <h1>Edit article</h1>
-                <hr />
-                <TextField label="Name" id="name" type="text" className="input-margin" value={article.name} variant="outlined"
+                <hr/>
+                <TextField label="Name" id="name" type="text" className="input-margin" value={article.name}
+                           variant="outlined"
                            onChange={(event) => changeInputHandler(event, 'comment')}/>
-                <TextField label="Description" id="description" type="text" className="input-margin" value={article.description} variant="outlined"
+                <TextField label="Description" id="description" type="text" className="input-margin"
+                           value={article.description} variant="outlined"
                            onChange={(event) => changeInputHandler(event, 'grade')}/>
-               <CheckBox textAnchor="Anonymous" />
-                <hr />
+                <CheckBox textAnchor="Anonymous"/>
+                <hr/>
 
                 <Button size="large" color="inherit" onClick={editArticle}>
                     Submit

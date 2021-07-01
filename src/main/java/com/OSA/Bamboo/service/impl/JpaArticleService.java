@@ -1,12 +1,12 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.repository.ArticleRepo;
 import com.OSA.Bamboo.repository.DiscountRepo;
 import com.OSA.Bamboo.service.ArticleService;
-import com.OSA.Bamboo.web.converter.ArticleToArticleDto;
+import com.OSA.Bamboo.web.converter.ArticleToDto;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,12 @@ public class JpaArticleService implements ArticleService {
     private DiscountRepo discountRepo;
 
     @Autowired
-    private ArticleToArticleDto toDto;
+    private ArticleToDto toDto;
 
     @Override
-    public List<Article> getAll() { return articleRepo.findAll(); }
+    public List<Article> getAll() {
+        return articleRepo.findAll();
+    }
 
     @Override
     public List<ArticleDto> getSellerArticles(Long id) throws IOException {
@@ -86,7 +88,7 @@ public class JpaArticleService implements ArticleService {
     @Override
     public Article delete(Long id) {
         Optional<Article> articleOptional = this.articleRepo.findById(id);
-        if(articleOptional.isPresent()) {
+        if (articleOptional.isPresent()) {
             Article article = articleOptional.get();
             articleRepo.deleteById(id);
             discountRepo.deleteByArticleId(id);
@@ -97,5 +99,7 @@ public class JpaArticleService implements ArticleService {
     }
 
     @Override
-    public Optional<Article> one(Long id) { return this.articleRepo.findById(id); }
+    public Optional<Article> one(Long id) {
+        return this.articleRepo.findById(id);
+    }
 }
