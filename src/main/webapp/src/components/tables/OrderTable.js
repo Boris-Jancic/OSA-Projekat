@@ -37,13 +37,14 @@ class OrderTable extends Component {
             },
             open: false,
             fullWidth: true,
-            anonymous: false
+            anonymous: false,
+            username: TokenService.decodeToken(TokenService.getToken()).sub
         };
     }
 
     componentDidMount() {
-        const username = TokenService.decodeToken(TokenService.getToken()).sub
-        OrderService.getOrders(username)
+        console.log(this.state.username)
+        OrderService.getOrders(this.state.username)
             .then((response) => response.data)
             .then(data => {
                 this.setState({orders: data});
@@ -67,6 +68,7 @@ class OrderTable extends Component {
         this.state.order.comment = comment
         this.state.order.grade = grade
         this.state.order.anonymousComment = this.state.anonymous
+        this.state.order.username = this.state.username;
 
         this.setState({open: false})
 
