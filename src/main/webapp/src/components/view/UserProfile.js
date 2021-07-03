@@ -53,14 +53,6 @@ export default function UserProfile() {
             user.lastName = lastName
             user.username = username
             const status = UserService.editUser(user)
-            console.log(status)
-            console.log(status)
-            console.log(status)
-            console.log(status)
-            console.log(status)
-            console.log(status)
-            console.log(status)
-            console.log(status)
         } else
             alert("Please fill out all the fields")
     }
@@ -100,7 +92,8 @@ export default function UserProfile() {
                 'passwordConfirm': newPasswordConfirm.trim(),
             }
             UserService.changePassword(userPasswordChange)
-                .then(() => alert("User details successfully updated"))
+                .then((response) => response.data)
+                .then(data => alert(data))
             setOpen(false)
         } else
             alert("Fill out both fields !")
