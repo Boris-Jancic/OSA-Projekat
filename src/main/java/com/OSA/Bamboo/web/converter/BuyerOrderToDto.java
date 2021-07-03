@@ -15,6 +15,7 @@ public class BuyerOrderToDto implements Converter<BuyerOrder, BuyerOrderDto> {
     public BuyerOrderDto convert(BuyerOrder buyerOrder) {
         BuyerOrderDto dto = new BuyerOrderDto();
 
+        dto.setId(buyerOrder.getId());
         dto.setComment(buyerOrder.getComment());
         dto.setAnonymousComment(buyerOrder.isAnonymousComment());
         dto.setArchivedComment(buyerOrder.isArchivedComment());

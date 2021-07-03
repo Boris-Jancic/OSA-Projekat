@@ -71,27 +71,30 @@ public class JpaUserService implements UserService {
     }
 
     @Override
-    public boolean changePassword(UserPasswordChangeDto userPasswordChangeDto) {
-        Optional<User> result = Optional.ofNullable(userRepo.findByUsername(userPasswordChangeDto.getUsername()));
+    public String changePassword(UserPasswordChangeDto dto) {
+        Optional<User> result = Optional.ofNullable(userRepo.findByUsername(dto.getUsername()));
         if (result.isEmpty()) {
-            return false;
-        } else {
-            User user = result.get();
-
-            System.out.println(userPasswordChangeDto);
-
-            String userPassword = user.getPassword();
-            String oldPassword = userPasswordChangeDto.getOldPassword();
-
-            if (BCrypt.checkpw(oldPassword, userPassword)) {
-                String password = passwordEncoder.encode(userPasswordChangeDto.getPassword());
-                user.setPassword(password);
-                this.userRepo.save(user);
-                return true;
-            } else {
-                return false;
-            }
+            return "User does not exist";
         }
+        User user = result.get();
+
+        System.out.println(dto);
+
+        String userPassword = user.getPassword();
+        String oldPassword = dto.getOldPassword();
+
+        if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
+            return "New passwords dont match";
+        }
+
+        if (BCrypt.checkpw(oldPassword, userPassword)) {
+            System.out.println("\n!!! Password changed for user: " + user.getUsername() + " !!!\n");
+            String password = passwordEncoder.encode(dto.getPassword());
+            user.setPassword(password);
+            this.userRepo.save(user);
+            return "Password successfully changed";
+        }
+        return "Old passwords dont match";
     }
 
     @Override

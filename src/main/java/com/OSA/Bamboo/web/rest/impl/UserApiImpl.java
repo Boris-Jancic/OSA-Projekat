@@ -22,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -129,17 +128,8 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public ResponseEntity changePassword(UserPasswordChangeDto dto) {
-        if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        } else {
-            try {
-                return new ResponseEntity<>(userService.changePassword(dto), HttpStatus.OK);
-            } catch (EntityNotFoundException var5) {
-                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-            }
-        }
+        return new ResponseEntity<>(userService.changePassword(dto), HttpStatus.OK);
     }
-
     @Override
     public ResponseEntity<User> updateUser(@Valid UserDto dto) {
         User user = userService.findByUsername(dto.getUsername());

@@ -42,7 +42,6 @@ public class OrderApiImpl implements OrderApi {
         System.out.println(buyerOrder);
         if (buyerOrder != null) {
             orderService.saveBuyerOrder(buyerOrder);
-            System.out.println(buyerOrder.getId());
             orderId = buyerOrder.getId();
             return new ResponseEntity<>(buyerOrder, HttpStatus.OK);
         }
@@ -86,6 +85,8 @@ public class OrderApiImpl implements OrderApi {
     @Override
     public ResponseEntity updateOrder(BuyerOrderDto dto) {
         BuyerOrder buyerOrder = toEntityBuyerO.convert(dto);
+        System.out.println(buyerOrder);
+        System.out.println(dto);
         if (buyerOrder != null)
             return new ResponseEntity<>(orderService.saveBuyerOrder(buyerOrder), HttpStatus.ACCEPTED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

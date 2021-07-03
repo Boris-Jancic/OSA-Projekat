@@ -22,7 +22,7 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    boolean changePassword(UserPasswordChangeDto userPasswordChangeDto);
+    String changePassword(UserPasswordChangeDto userPasswordChangeDto);
 
     boolean registerSeller(Seller seller);
 
