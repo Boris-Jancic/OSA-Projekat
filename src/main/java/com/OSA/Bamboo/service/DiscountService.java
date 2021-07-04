@@ -8,6 +8,8 @@ import java.util.List;
 @Service
 public interface DiscountService {
     Discount save(Discount discount);
+
     List<Discount> getSellerDiscounts(Long id);
+
     void deleteDiscount(Long id);
 }

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useHistory, useParams} from "react-router-dom";
 import {UserService} from "../service/UserService";
-import {AuthenticationService} from "../service/clients/AuthenticationService";
-import {Card, CardActions, CardContent, CardMedia, Grid, Typography} from "@material-ui/core";
+import {Card, CardActions, CardContent, Grid, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
 
@@ -15,7 +14,7 @@ export default function SellerLayout() {
         fetchSellers()
             .then(res => setSellers(res.data))
             .catch(err => setError(err));
-    },[])
+    }, [])
 
     const {id} = useParams();
 
@@ -47,7 +46,7 @@ export default function SellerLayout() {
         window.location.assign("browse/" + id)
     }
 
-    return(<div className={classes.root} className="card-view">
+    return (<div className={classes.root} className="card-view">
             <Grid
                 container
                 spacing={3}
@@ -62,17 +61,17 @@ export default function SellerLayout() {
                                 <Typography gutterBottom variant="h5" component="h1">
                                     {elem.sellerName}
                                 </Typography>
-                                <hr />
+                                <hr/>
                                 <Typography variant="body2" color="textSecondary" component="h2">
                                     <b> {elem.address} </b>
-                                    <hr />
+                                    <hr/>
                                     <b> {elem.email} </b>
-                                    <hr />
+                                    <hr/>
                                     <b> Grade: <u><b> {elem.grade} </b></u> </b>
                                 </Typography>
-                                <hr />
+                                <hr/>
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                   Selling since : {elem.sellingSince}
+                                    Selling since : {elem.sellingSince}
                                 </Typography>
                             </CardContent>
 
@@ -81,9 +80,10 @@ export default function SellerLayout() {
                                 justifyContent: "center",
                                 alignItems: "center",
                             }}><Button size="small" color="primary" onClick={() => handleArticles(elem.user.id)}>
-                                    articles
-                                </Button>
-                                <Button size="small" color="primary" onClick={() => handleComments(elem.user.username, elem.grade)}>
+                                articles
+                            </Button>
+                                <Button size="small" color="primary"
+                                        onClick={() => handleComments(elem.user.username, elem.grade)}>
                                     comments
                                 </Button>
                             </CardActions>

@@ -1,12 +1,12 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.repository.ArticleRepo;
 import com.OSA.Bamboo.repository.DiscountRepo;
 import com.OSA.Bamboo.service.ArticleService;
-import com.OSA.Bamboo.web.converter.ArticleToArticleDto;
+import com.OSA.Bamboo.web.converter.ArticleToDto;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,28 +31,31 @@ public class JpaArticleService implements ArticleService {
     private DiscountRepo discountRepo;
 
     @Autowired
-    private ArticleToArticleDto toDto;
+    private ArticleToDto toDto;
 
     @Override
-    public List<Article> getAll() { return articleRepo.findAll(); }
+    public List<Article> getAll() {
+        return articleRepo.findAll();
+    }
 
     @Override
     public List<ArticleDto> getSellerArticles(Long id) throws IOException {
-        List<Article> articles = articleRepo.getSellerArticles(id);
         List<Discount> discounts = discountRepo.getActualDiscounts(id);
+        List<ArticleDto> articlesDto = toDto.convert(articleRepo.getSellerArticles(id));
 
-        for (Article article : articles) {
+        for (ArticleDto article : articlesDto) {
             double articlePrice = article.getPrice();
             double discountPrice = 0;
             for (Discount discount : discounts) {
                 if (discount.getArticle().getId() == article.getId()) {
                     discountPrice = articlePrice - articlePrice * (discount.getDiscountPercent() * 0.01);
                     article.setPrice(discountPrice);
+                    article.setOnDiscount(true);
                 }
             }
         }
 
-        return toDto.convert(articles);
+        return articlesDto;
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {
@@ -86,7 +89,7 @@ public class JpaArticleService implements ArticleService {
     @Override
     public Article delete(Long id) {
         Optional<Article> articleOptional = this.articleRepo.findById(id);
-        if(articleOptional.isPresent()) {
+        if (articleOptional.isPresent()) {
             Article article = articleOptional.get();
             articleRepo.deleteById(id);
             discountRepo.deleteByArticleId(id);
@@ -97,5 +100,7 @@ public class JpaArticleService implements ArticleService {
     }
 
     @Override
-    public Optional<Article> one(Long id) { return this.articleRepo.findById(id); }
+    public Optional<Article> one(Long id) {
+        return this.articleRepo.findById(id);
+    }
 }

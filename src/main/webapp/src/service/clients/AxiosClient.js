@@ -1,6 +1,6 @@
 import axios from "axios";
-import { TokenService } from "../TokenService";
-import { AuthenticationService } from "./AuthenticationService";
+import {TokenService} from "../TokenService";
+import {AuthenticationService} from "./AuthenticationService";
 
 // API klijent se kreira ka specifičnom endpoint-u, uz sve ono što je uvek neophodno slati
 const AxiosClient = axios.create();

@@ -1,6 +1,5 @@
 package com.OSA.Bamboo.service.impl;
 
-import com.OSA.Bamboo.dto.UserPasswordChangeDto;
 import com.OSA.Bamboo.model.Buyer;
 import com.OSA.Bamboo.model.Seller;
 import com.OSA.Bamboo.model.User;
@@ -9,12 +8,13 @@ import com.OSA.Bamboo.repository.BuyerRepo;
 import com.OSA.Bamboo.repository.SellerRepo;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.service.UserService;
+import com.OSA.Bamboo.web.dto.UserPasswordChangeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +44,9 @@ public class JpaUserService implements UserService {
     }
 
     @Override
-    public List<Seller> sellers() { return sellerRepo.findAll(); }
+    public List<Seller> sellers() {
+        return sellerRepo.findAll();
+    }
 
     @Override
     public User save(User user) {
@@ -52,7 +54,9 @@ public class JpaUserService implements UserService {
     }
 
     @Override
-    public void delete(String username) { userRepo.deleteByUsername(username); }
+    public void delete(String username) {
+        userRepo.deleteByUsername(username);
+    }
 
     @Override
     public User findByUsername(String username) {
@@ -67,33 +71,30 @@ public class JpaUserService implements UserService {
     }
 
     @Override
-    public boolean changePassword(UserPasswordChangeDto userPasswordChangeDto) {
-        Optional<User> result = Optional.ofNullable(userRepo.findByUsername(userPasswordChangeDto.getUsername()));
-        if (!result.isPresent()) {
-            throw new EntityNotFoundException();
-        } else {
-            User user = (User)result.get();
-            System.out.println(user.getPassword());
-            System.out.println(passwordEncoder.encode(userPasswordChangeDto.getOldPassword()));
-            System.out.println(passwordEncoder.encode(userPasswordChangeDto.getPassword()));
-            System.out.println(userPasswordChangeDto.getOldPassword());
-            System.out.println(userPasswordChangeDto.getPassword());
-            System.out.println(userPasswordChangeDto);
-
-            if (user.getPassword().equals(passwordEncoder.encode(userPasswordChangeDto.getPassword()))) {
-                System.out.println("doslo");
-                String password = userPasswordChangeDto.getPassword();
-                if (!userPasswordChangeDto.getPassword().equals("")) {
-                    password = this.passwordEncoder.encode(userPasswordChangeDto.getPassword());
-                    System.out.println("doslo");
-                }
-                user.setPassword(password);
-                this.userRepo.save(user);
-                return true;
-            } else {
-                return false;
-            }
+    public String changePassword(UserPasswordChangeDto dto) {
+        Optional<User> result = Optional.ofNullable(userRepo.findByUsername(dto.getUsername()));
+        if (result.isEmpty()) {
+            return "User does not exist";
         }
+        User user = result.get();
+
+        System.out.println(dto);
+
+        String userPassword = user.getPassword();
+        String oldPassword = dto.getOldPassword();
+
+        if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
+            return "New passwords dont match";
+        }
+
+        if (BCrypt.checkpw(oldPassword, userPassword)) {
+            System.out.println("\n!!! Password changed for user: " + user.getUsername() + " !!!\n");
+            String password = passwordEncoder.encode(dto.getPassword());
+            user.setPassword(password);
+            this.userRepo.save(user);
+            return "Password successfully changed";
+        }
+        return "Old passwords dont match";
     }
 
     @Override

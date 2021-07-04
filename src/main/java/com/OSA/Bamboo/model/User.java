@@ -1,7 +1,8 @@
 package com.OSA.Bamboo.model;
 
 import com.OSA.Bamboo.model.enums.UserRole;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

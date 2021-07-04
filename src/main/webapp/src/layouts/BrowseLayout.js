@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import {Grid, Card, CardContent, Typography, CardHeader} from '@material-ui/core/'
+import {makeStyles} from '@material-ui/core/styles'
+import {Card, CardContent, CardHeader, Grid, Typography} from '@material-ui/core/'
 import Button from "@material-ui/core/Button";
 import {CardActions, CardMedia, Dialog, DialogActions, DialogContent, TextField} from "@material-ui/core";
 import {AuthenticationService} from "../service/clients/AuthenticationService";
@@ -34,7 +34,7 @@ export default function BrowseLayout() {
 
     useEffect(() => {
         fetchArticles().catch(err => setError(err))
-    },[])
+    }, [])
 
     const {id} = useParams();
 
@@ -63,7 +63,9 @@ export default function BrowseLayout() {
         console.log("Article id " + articleId)
     };
 
-    const handleClose = () => {setOpen(false);};
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleAddToCart = () => {  // Adds article to cart
         let quanity = document.getElementById('quanity').value
@@ -85,88 +87,95 @@ export default function BrowseLayout() {
             alert("Please add something to your cart")
     }
 
+    console.log(articles)
+
     return (
-            <div className={classes.root} class="card-view">
+        <div className={classes.root} class="card-view">
 
-                {AuthenticationService.getRole() === "ROLE_BUYER" && (
-                    <Button fullWidth={true} style={{marginBottom: "20px"}} type="submit" color="inherit" onClick={() => handleCartView()}>
-                        CART
+            {AuthenticationService.getRole() === "ROLE_BUYER" && (
+                <Button fullWidth={true} style={{marginBottom: "20px"}} type="submit" color="inherit"
+                        onClick={() => handleCartView()}>
+                    CART
+                </Button>
+            )}
+            <Grid
+                container
+                spacing={3}
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+            >
+                {articles.map(elem => (
+
+                    <Grid item xs={12} sm={6} md={3} key={articles.indexOf(elem)}>
+                        <Card variant="outlined">
+                            <CardMedia
+                                className={classes.media}
+                                image={"data:image/png;base64," + elem.imageBytes}
+                                title="Contemplative Reptile"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="h1">
+                                    {elem.name}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="h2">
+                                    {elem.onDiscount === true && (
+                                        <h6 style={{color: "red"}}>DISCOUNT</h6>
+                                    )}
+                                    <b> {elem.price} €</b>
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {elem.description}
+                                </Typography>
+                            </CardContent>
+
+                            <CardActions style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+                                {AuthenticationService.getRole() === "ROLE_SELLER" && (
+                                    <>
+                                        <Button size="small" color="primary" href={"/editArticle/" + elem.id}>
+                                            Edit
+                                        </Button>
+                                        <Button size="small" color="primary" onClick={() => handleDelete(elem.id)}>
+                                            Delete
+                                        </Button>
+                                    </>
+                                )}
+                                {AuthenticationService.getRole() === "ROLE_BUYER" && (
+                                    <Button size="small" type="submit" color="primary"
+                                            onClick={() => handleClickOpen(elem.id)}>
+                                        Add to cart
+                                    </Button>
+                                )}
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogContent>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="quanity"
+                        label="Quanity"
+                        type="number"
+                        variant="outlined"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
                     </Button>
-                )}
-                <Grid
-                    container
-                    spacing={3}
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="flex-start"
-                >
-                    {articles.map(elem => (
-
-                        <Grid item xs={12} sm={6} md={3} key={articles.indexOf(elem)}>
-                                <Card variant="outlined">
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={"data:image/png;base64," + elem.imageBytes}
-                                        title="Contemplative Reptile"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h1">
-                                            {elem.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="h2">
-                                                <b> {elem.price} €</b>
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            {elem.description}
-                                        </Typography>
-                                    </CardContent>
-
-                                    <CardActions style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}>
-                                    {AuthenticationService.getRole() === "ROLE_SELLER" && (
-                                        <>
-                                            <Button size="small" color="primary" href={"/editArticle/" + elem.id}>
-                                                Edit
-                                            </Button>
-                                            <Button size="small" color="primary" onClick={() => handleDelete(elem.id)}>
-                                                Delete
-                                            </Button>
-                                        </>
-                                    )}
-                                    {AuthenticationService.getRole() === "ROLE_BUYER" && (
-                                            <Button size="small" type="submit" color="primary" onClick={() => handleClickOpen(elem.id)}>
-                                                Add to cart
-                                            </Button>
-                                    )}
-                                    </CardActions>
-                                </Card>
-                            </Grid>
-                    ))}
-                </Grid>
-
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="quanity"
-                            label="Quanity"
-                            type="number"
-                            variant="outlined"
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={() => handleAddToCart()} color="primary">
-                            Continue
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+                    <Button onClick={() => handleAddToCart()} color="primary">
+                        Continue
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
     )
 }

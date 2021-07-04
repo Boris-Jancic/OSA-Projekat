@@ -1,13 +1,13 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.dto.BuyerOrderDto;
-import com.OSA.Bamboo.dto.OrderedArticleDto;
 import com.OSA.Bamboo.model.BuyerOrder;
 import com.OSA.Bamboo.model.OrderedArticle;
-import com.OSA.Bamboo.service.ArticleService;
 import com.OSA.Bamboo.service.impl.JpaOrderServiceImpl;
-import com.OSA.Bamboo.web.converter.BuyerOrderDtoToBuyerOrder;
-import com.OSA.Bamboo.web.converter.OrderedArtDtoToOrderedArt;
+import com.OSA.Bamboo.web.converter.BuyerOrderToDto;
+import com.OSA.Bamboo.web.converter.DtoToBuyerOrder;
+import com.OSA.Bamboo.web.converter.DtoToOrderedArticle;
+import com.OSA.Bamboo.web.dto.BuyerOrderDto;
+import com.OSA.Bamboo.web.dto.OrderedArticleDto;
 import com.OSA.Bamboo.web.rest.OrderApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +26,13 @@ public class OrderApiImpl implements OrderApi {
     private JpaOrderServiceImpl orderService;
 
     @Autowired
-    private OrderedArtDtoToOrderedArt toEntityOrderA;
+    private DtoToOrderedArticle toEntityOrderA;
 
     @Autowired
-    private BuyerOrderDtoToBuyerOrder toEntityBuyerO;
+    private DtoToBuyerOrder toEntityBuyerO;
 
     @Autowired
-    private ArticleService articleService;
+    private BuyerOrderToDto toDtoBo;
 
     private Long orderId = 1L;
 
@@ -41,7 +42,6 @@ public class OrderApiImpl implements OrderApi {
         System.out.println(buyerOrder);
         if (buyerOrder != null) {
             orderService.saveBuyerOrder(buyerOrder);
-            System.out.println(buyerOrder.getId());
             orderId = buyerOrder.getId();
             return new ResponseEntity<>(buyerOrder, HttpStatus.OK);
         }
@@ -60,9 +60,9 @@ public class OrderApiImpl implements OrderApi {
     }
 
     @Override
-    public ResponseEntity sellerComments(String username) {
-        List<BuyerOrder> orders = orderService.getSellerComments(username);
-        return new ResponseEntity(orders, HttpStatus.OK);
+    public ResponseEntity sellerComments(String username) throws IOException {
+        List<BuyerOrderDto> orders = toDtoBo.convert(orderService.getSellerComments(username));
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @Override
@@ -83,7 +83,10 @@ public class OrderApiImpl implements OrderApi {
     }
 
     @Override
-    public ResponseEntity updateOrder(BuyerOrder buyerOrder) {
+    public ResponseEntity updateOrder(BuyerOrderDto dto) {
+        BuyerOrder buyerOrder = toEntityBuyerO.convert(dto);
+        System.out.println(buyerOrder);
+        System.out.println(dto);
         if (buyerOrder != null)
             return new ResponseEntity<>(orderService.saveBuyerOrder(buyerOrder), HttpStatus.ACCEPTED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

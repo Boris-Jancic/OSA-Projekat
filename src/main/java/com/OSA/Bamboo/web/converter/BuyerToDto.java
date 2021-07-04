@@ -1,11 +1,11 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.BuyerDto;
 import com.OSA.Bamboo.model.Buyer;
+import com.OSA.Bamboo.web.dto.BuyerDto;
 import org.springframework.core.convert.converter.Converter;
 
-public class BuyerToBuyerDto implements Converter<Buyer, BuyerDto> {
-    public BuyerToBuyerDto() {
+public class BuyerToDto implements Converter<Buyer, BuyerDto> {
+    public BuyerToDto() {
     }
 
     @Override

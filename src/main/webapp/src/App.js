@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarComponent from "./components/navbar/NavbarComponent";
 import HomeLayout from "./layouts/HomeLayout";
@@ -17,70 +17,69 @@ import CartItemsTable from "./components/tables/CartItemsTable";
 import OrderTable from "./components/tables/OrderTable";
 import SellerProfile from "./components/view/SellerProfile";
 import {DiscountComponent} from "./components/crud/DiscountComponent";
-import {DiscountTable} from "./components/tables/DiscountTable";
 import DiscountLayout from "./layouts/DiscountLayout";
 
 function App() {
-  return (
-      <div className="App">
-      <NavbarComponent />
-        <Router>
-          <Switch>
-              <Route path="/home" exact component={HomeLayout}/>
-              <Route path="/register" exact component={Register}/>
-              <Route path="/login" exact component={LoginLayout}/>
-              <Route path="/profile" exact component={UserProfile}/>
-              <PrivateRoute
-                  path="/sellers"
-                  exact
-                  component={SellerLayout}
-                  roles={["ROLE_BUYER"]}/>
-              <PrivateRoute
-                  path="/cart"
-                  exact
-                  component={CartItemsTable}
-                  roles={["ROLE_BUYER"]}/>
-              <PrivateRoute
-                  path="/orders"
-                  exact
-                  component={OrderTable}
-                  roles={["ROLE_BUYER"]}/>
-              <PrivateRoute
-                  path="/addArticle"
-                  exact
-                  component={AddArticle}
-                  roles={["ROLE_SELLER"]}/>
-              <PrivateRoute
-                  path="/discounts"
-                  exact
-                  component={DiscountComponent}
-                  roles={["ROLE_SELLER"]}/>
-              <PrivateRoute
-                  path="/discounts/management"
-                  exact
-                  component={DiscountLayout}
-                  roles={["ROLE_SELLER"]}/>
-              <PrivateRoute
-                  path="/editArticle/:id"
-                  exact
-                  component={EditArticle}
-                  roles={["ROLE_SELLER"]}/>
-              <PrivateRoute
-                  path="/seller/:username"
-                  exact
-                  component={SellerProfile}
-                  roles={["ROLE_SELLER", "ROLE_BUYER"]}/>
-              <PrivateRoute
-                  path="/users"
-                  exact
-                  component={AdminLayout}
-                  roles={["ROLE_ADMIN"]}/>
-              <Route path="/browse/:id" exact component={BrowseLayout}/>
-              <Route component={NotFound} />
-          </Switch>
-        </Router>
-      </div>
-  );
+    return (
+        <div className="App">
+            <NavbarComponent/>
+            <Router>
+                <Switch>
+                    <Route path="/home" exact component={HomeLayout}/>
+                    <Route path="/register" exact component={Register}/>
+                    <Route path="/login" exact component={LoginLayout}/>
+                    <Route path="/profile" exact component={UserProfile}/>
+                    <PrivateRoute
+                        path="/sellers"
+                        exact
+                        component={SellerLayout}
+                        roles={["ROLE_BUYER"]}/>
+                    <PrivateRoute
+                        path="/cart"
+                        exact
+                        component={CartItemsTable}
+                        roles={["ROLE_BUYER"]}/>
+                    <PrivateRoute
+                        path="/orders"
+                        exact
+                        component={OrderTable}
+                        roles={["ROLE_BUYER"]}/>
+                    <PrivateRoute
+                        path="/addArticle"
+                        exact
+                        component={AddArticle}
+                        roles={["ROLE_SELLER"]}/>
+                    <PrivateRoute
+                        path="/discounts"
+                        exact
+                        component={DiscountComponent}
+                        roles={["ROLE_SELLER"]}/>
+                    <PrivateRoute
+                        path="/discounts/management"
+                        exact
+                        component={DiscountLayout}
+                        roles={["ROLE_SELLER"]}/>
+                    <PrivateRoute
+                        path="/editArticle/:id"
+                        exact
+                        component={EditArticle}
+                        roles={["ROLE_SELLER"]}/>
+                    <PrivateRoute
+                        path="/seller/:username"
+                        exact
+                        component={SellerProfile}
+                        roles={["ROLE_SELLER", "ROLE_BUYER"]}/>
+                    <PrivateRoute
+                        path="/users"
+                        exact
+                        component={AdminLayout}
+                        roles={["ROLE_ADMIN"]}/>
+                    <Route path="/browse/:id" exact component={BrowseLayout}/>
+                    <Route component={NotFound}/>
+                </Switch>
+            </Router>
+        </div>
+    );
 }
 
 export default App;

@@ -1,10 +1,10 @@
-import React, {Component, useState} from "react";
-import {Redirect, useHistory} from "react-router-dom";
+import React, {useState} from "react";
+import {useHistory} from "react-router-dom";
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {UserService} from "../../service/UserService";
 
-export default function Register () {
+export default function Register() {
 
     const [user, setUser] = useState('seller')
     const [submitValid, setSubmitValid] = useState(false)
@@ -19,8 +19,7 @@ export default function Register () {
             email.removeAttribute('hidden');
             name.removeAttribute('hidden');
             setUser('seller')
-        }
-        else {
+        } else {
             email.hidden = true;
             name.hidden = true;
             setUser('buyer')
@@ -48,7 +47,7 @@ export default function Register () {
                 console.log(buyer)
                 await UserService.registerBuyer(buyer)
                     .then((response) => response.data)
-                    .then(data =>{
+                    .then(data => {
                         if (data === false)
                             alert("A user with this username already exists !")
                         else {
@@ -74,7 +73,7 @@ export default function Register () {
                 };
                 await UserService.registerSeller(seller)
                     .then((response) => response.data)
-                    .then(data =>{
+                    .then(data => {
                         if (data === false)
                             alert("A user with this username already exists !")
                         else {
@@ -86,14 +85,14 @@ export default function Register () {
         }
     }
 
-    function validateRegister (name, lastName, username, password, address, email, sellerName) {
+    function validateRegister(name, lastName, username, password, address, email, sellerName) {
         let valid = true;
-        if (name === "" || lastName === ""  || username === "" || password === "" || address === "") {
+        if (name === "" || lastName === "" || username === "" || password === "" || address === "") {
             valid = false
         }
         if (user === 'seller') {
             if (email === '' || sellerName === '')
-            valid = false
+                valid = false
         }
 
         if (!valid) {
@@ -107,7 +106,7 @@ export default function Register () {
     }
 
     return (
-        <div style={divStyle} >
+        <div style={divStyle}>
             <div className="form-size">
                 <h1>Register as a</h1>
 
@@ -119,17 +118,19 @@ export default function Register () {
                         seller
                     </Button>
                 </span>
-                <hr />
+                <hr/>
 
-                <TextField className="input-margin" label="Name" id="name" type="text" variant="outlined" />
-                <TextField className="input-margin" label="Last name" id="lastName" type="text" variant="outlined" />
-                <TextField className="input-margin" label="Username" id="username" type="text" variant="outlined" />
-                <TextField className="input-margin" label="Password" id="password" type="password" variant="outlined" />
-                <TextField className="input-margin" label="Address" id="address" type="text" variant="outlined" />
-                <TextField className="input-margin" placeholder="Seller name" id="sellerName" type="text" variant="outlined"/>
-                <TextField className="input-margin" placeholder="Email" id="sellerEmail" type="email" variant="outlined"/>
+                <TextField className="input-margin" label="Name" id="name" type="text" variant="outlined"/>
+                <TextField className="input-margin" label="Last name" id="lastName" type="text" variant="outlined"/>
+                <TextField className="input-margin" label="Username" id="username" type="text" variant="outlined"/>
+                <TextField className="input-margin" label="Password" id="password" type="password" variant="outlined"/>
+                <TextField className="input-margin" label="Address" id="address" type="text" variant="outlined"/>
+                <TextField className="input-margin" placeholder="Seller name" id="sellerName" type="text"
+                           variant="outlined"/>
+                <TextField className="input-margin" placeholder="Email" id="sellerEmail" type="email"
+                           variant="outlined"/>
 
-               <hr />
+                <hr/>
                 <Button size="large" color="inherit" onClick={() => registerUser()}>
                     Submit
                 </Button>

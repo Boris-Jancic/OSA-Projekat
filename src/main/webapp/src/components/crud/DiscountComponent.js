@@ -1,21 +1,25 @@
 import React, {Component} from "react";
 import {ArticleService} from "../../service/ArticleService";
 import {
-    Dialog, DialogActions, DialogContent,
-    DialogTitle, FormControlLabel, makeStyles,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    makeStyles,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField
+    TableRow,
+    TextField
 } from "@material-ui/core";
 import {classes} from "istanbul-lib-coverage";
 import Button from "@material-ui/core/Button";
 import {DiscountService} from "../../service/DiscountService";
 
-export class DiscountComponent extends Component{
+export class DiscountComponent extends Component {
 
     useStyles = makeStyles((theme) => ({
         container: {
@@ -47,11 +51,13 @@ export class DiscountComponent extends Component{
         ArticleService.getSellerArticles(localStorage.getItem('sellerId'))
             .then((response) => response.data)
             .then(articlesData => {
-                this.setState({ articles: articlesData });
+                this.setState({articles: articlesData});
             });
     }
 
-    handleClose = () => {this.setState({open: false})};
+    handleClose = () => {
+        this.setState({open: false})
+    };
 
     handleClickOpen = (article) => {
         this.setState({open: true})
@@ -78,8 +84,7 @@ export class DiscountComponent extends Component{
             if (this.checkDatesValid(new Date(fromDate), new Date(tillDate))) {
                 await DiscountService.addDiscount(dto)
                 this.setState({open: false})
-            }
-            else
+            } else
                 alert("From date must be smaller than till !")
         } else {
             alert("Please input the correct values")
@@ -126,7 +131,8 @@ export class DiscountComponent extends Component{
                                     <TableCell align={"center"}>{row.description}</TableCell>
                                     <TableCell align={"center"}>{row.price}</TableCell>
                                     <TableCell>
-                                        <Button fullWidth={true} variant="contained" color="primary" onClick={() => this.handleClickOpen(row.id)}>
+                                        <Button fullWidth={true} variant="contained" color="primary"
+                                                onClick={() => this.handleClickOpen(row.id)}>
                                             Add discount
                                         </Button>
                                     </TableCell>

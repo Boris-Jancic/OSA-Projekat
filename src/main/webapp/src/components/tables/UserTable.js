@@ -1,10 +1,8 @@
-
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
 import {UserService} from "../../service/UserService";
-import {ArticleService} from "../../service/ArticleService";
 import {TokenService} from "../../service/TokenService";
 
 export class UserTable extends Component {
@@ -31,18 +29,23 @@ export class UserTable extends Component {
     }
 
     handleAction(user) {
-        if (user.blocked === false)
+        let btn = document.getElementById('btn' + user.id)
+
+        if (user.blocked === false) {
+            btn.innerText = "Unblock"
             user.blocked = true
-        else
+        } else {
+            btn.innerText = "Block"
             user.blocked = false
+        }
+
         UserService.editUser(user)
-        window.location.reload()
     }
 
 
     render() {
         console.log(this.state.users)
-        return(
+        return (
             <div className="form-table">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -66,14 +69,17 @@ export class UserTable extends Component {
                                     <TableCell align={"center"}>
 
                                         {(row.blocked === false) ? (
-                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary"
+                                                    onClick={() => this.handleAction(row)}>
                                                 Block
                                             </Button>
                                         ) : (
-                                            <Button variant="contained" color="primary" onClick={() => this.handleAction(row)}>
+                                            <Button id={"btn" + row.id} variant="contained" color="primary"
+                                                    onClick={() => this.handleAction(row)}>
                                                 Unblock
                                             </Button>
                                         )}
+
                                     </TableCell>
                                 </TableRow>
                             ))}

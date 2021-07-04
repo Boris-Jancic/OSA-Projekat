@@ -13,11 +13,7 @@ const LoginLayout = () => {
 
     const handleFormInputChange = (name) => (event) => {
         const val = event.target.value;
-
-        // ... - Destructuring assignment - omogućuje raspakivanje vrednosti objekata ili nizova
-        // setCredentails će zameniti stanje novim objektom koji uzima vrednosti iz prethodnog stanja kredencijala
-        // ali sa ažuriranom vrednošću [name] polja
-        setCredentials({ ...credentials, [name]: val });
+        setCredentials({...credentials, [name]: val});
     };
 
     const login = async () => {
@@ -25,7 +21,7 @@ const LoginLayout = () => {
     };
 
     return (
-        <div  style={divStyle}>
+        <div style={divStyle}>
             <div className="form-size">
                 <h1>Sign in</h1>
 
@@ -43,11 +39,11 @@ const LoginLayout = () => {
                            variant="outlined"
                            className="input-margin"
                            onChange={handleFormInputChange("password")}/>
-                <hr />
+                <hr/>
                 <Button size="large" color="inherit" onClick={login}>
                     log in
                 </Button>
-                <hr />
+                <hr/>
                 <a color={'inherit'} style={{color: "inherit"}} href="/register">
                     Register
                 </a>

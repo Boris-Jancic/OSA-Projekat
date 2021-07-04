@@ -1,21 +1,24 @@
 import React, {Component} from "react";
-import {ArticleService} from "../../service/ArticleService";
 import {
-    Dialog, DialogActions, DialogContent,
-    DialogTitle, FormControlLabel, makeStyles,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    makeStyles,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField
+    TableRow,
+    TextField
 } from "@material-ui/core";
 import {classes} from "istanbul-lib-coverage";
 import Button from "@material-ui/core/Button";
 import {DiscountService} from "../../service/DiscountService";
 
-export class DiscountTable extends Component{
+export class DiscountTable extends Component {
 
     useStyles = makeStyles((theme) => ({
         container: {
@@ -47,11 +50,13 @@ export class DiscountTable extends Component{
         DiscountService.getDiscounts(localStorage.getItem('sellerId'))
             .then((response) => response.data)
             .then(data => {
-                this.setState({ discounts: data });
+                this.setState({discounts: data});
             });
     }
 
-    handleClose = () => {this.setState({open: false})};
+    handleClose = () => {
+        this.setState({open: false})
+    };
 
     handleClickOpen = (discount) => {
         this.setState({open: true})
@@ -67,9 +72,7 @@ export class DiscountTable extends Component{
     }
 
     checkDatesValid(fromDate, tillDate) {
-        if (fromDate < tillDate)
-            return true
-        return false
+        return fromDate < tillDate;
     }
 
     handleAction = async () => {
@@ -79,8 +82,7 @@ export class DiscountTable extends Component{
             if (this.checkDatesValid(new Date(this.state.discount.fromDate), new Date(this.state.discount.tillDate))) {
                 await DiscountService.updateDiscount(this.state.discount)
                 this.setState({open: false})
-            }
-            else
+            } else
                 alert("From date must be smaller than till !")
         } else {
             alert("Please input the correct values")
@@ -124,11 +126,13 @@ export class DiscountTable extends Component{
                                     <TableCell align={"center"}>{row.tillDate}</TableCell>
                                     <TableCell align={"center"}>{row.discountPercent}</TableCell>
                                     <TableCell>
-                                        <Button fullWidth={true} variant="contained" color="primary" onClick={() => this.handleClickOpen(row)}>
+                                        <Button fullWidth={true} variant="contained" color="primary"
+                                                onClick={() => this.handleClickOpen(row)}>
                                             Edit
                                         </Button>
-                                        <hr />
-                                        <Button fullWidth={true} variant="contained" color="primary" onClick={() => this.handleDelete(row.id)}>
+                                        <hr/>
+                                        <Button fullWidth={true} variant="contained" color="primary"
+                                                onClick={() => this.handleDelete(row.id)}>
                                             Delete
                                         </Button>
                                     </TableCell>

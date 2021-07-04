@@ -1,15 +1,15 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.DiscountDto;
 import com.OSA.Bamboo.model.Discount;
 import com.OSA.Bamboo.repository.UserRepo;
 import com.OSA.Bamboo.service.ArticleService;
+import com.OSA.Bamboo.web.dto.DiscountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DiscountDtoToDiscount implements Converter<DiscountDto, Discount> {
+public class DtoToDiscount implements Converter<DiscountDto, Discount> {
 
     @Autowired
     private ArticleService articleService;

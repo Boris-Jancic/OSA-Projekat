@@ -1,26 +1,24 @@
-
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {
     Checkbox,
-    Dialog, DialogActions,
-    DialogContent, DialogTitle, FormControlLabel,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
     Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField
+    TableRow,
+    TextField
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {classes} from "istanbul-lib-coverage";
-import {UserService} from "../../service/UserService";
-import {ArticleService} from "../../service/ArticleService";
 import {OrderService} from "../../service/OrderService";
 import {TokenService} from "../../service/TokenService";
-import {CheckBox} from "@material-ui/icons";
-import Switch from "react-bootstrap/Switch";
-import {number} from "prop-types";
 
 class OrderTable extends Component {
     constructor(props) {
@@ -35,24 +33,21 @@ class OrderTable extends Component {
                 delivered: false,
                 grade: 0,
                 hourlyRate: "",
-                user: "tada" ,
+                username: "",
             },
             open: false,
             fullWidth: true,
-            anonymous: false
+            anonymous: false,
+            username: TokenService.decodeToken(TokenService.getToken()).sub
         };
     }
 
-    handleFullWidthChange = (event) => {
-        this.setState({fullWidth: event.target.checked})
-    };
-
     componentDidMount() {
-        const username = TokenService.decodeToken(TokenService.getToken()).sub
-        OrderService.getOrders(username)
+        console.log(this.state.username)
+        OrderService.getOrders(this.state.username)
             .then((response) => response.data)
-            .then(orderData => {
-                this.setState({ orders: orderData });
+            .then(data => {
+                this.setState({orders: data});
             });
     }
 
@@ -61,7 +56,9 @@ class OrderTable extends Component {
         this.setState({order: order})
     };
 
-    handleClose = () => {this.setState({open: false})};
+    handleClose = () => {
+        this.setState({open: false})
+    };
 
     handleAction = async () => {
         let comment = document.getElementById('comment').value
@@ -71,13 +68,25 @@ class OrderTable extends Component {
         this.state.order.comment = comment
         this.state.order.grade = grade
         this.state.order.anonymousComment = this.state.anonymous
+        this.state.order.username = this.state.username;
 
         this.setState({open: false})
-        for (let i=0; i < this.state.orders.length; i++) {
+
+        if (comment === "" || grade === "") {
+            alert("Please fill out all blank fields")
+            return
+        }
+        if (grade <= 0 || grade > 5) {
+            alert("The grade must be betweet 1 and 5 !")
+            return
+        }
+
+        for (let i = 0; i < this.state.orders.length; i++) {
             if (this.state.orders[i].delivered === true) {
                 this.state.orders.splice(i, 1)
             }
         }
+
         await OrderService.putOrder(this.state.order)
     }
 
@@ -86,8 +95,7 @@ class OrderTable extends Component {
     }
 
     render() {
-        console.log(this.state.orders)
-        return(
+        return (
             <div className="form-table">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -105,13 +113,14 @@ class OrderTable extends Component {
                                     <TableCell align={"center"}>{row.id}</TableCell>
                                     <TableCell align={"center"}>{row.hourlyRate}</TableCell>
                                     <TableCell align={"center"}>
-
-                                    <Button variant="contained" color="primary" onClick={() => this.handleClickOpen(row)}>
-                                        Set delivered status
-                                    </Button>
+                                        <Button variant="contained" color="primary"
+                                                onClick={() => this.handleClickOpen(row)}>
+                                            Set delivered status
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
+
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -128,7 +137,7 @@ class OrderTable extends Component {
                             label="Comment"
                             type="text"
                         />
-                        <br />
+                        <br/>
                         <TextField
                             fullWidth={this.state.fullWidth}
                             autoFocus
@@ -139,11 +148,11 @@ class OrderTable extends Component {
                             min={1}
                             max={5}
                         />
-                        <br />
+                        <br/>
                         <FormControlLabel
                             value="end"
                             id="anonymous"
-                            control={<Checkbox color="success" />}
+                            control={<Checkbox color="success"/>}
                             onChange={this.handleCheckBoxChange}
                             label="Anonymous comment"
                             labelPlacement="end"

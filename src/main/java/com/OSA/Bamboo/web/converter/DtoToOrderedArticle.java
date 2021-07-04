@@ -1,9 +1,9 @@
 package com.OSA.Bamboo.web.converter;
 
-import com.OSA.Bamboo.dto.OrderedArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.model.OrderedArticle;
 import com.OSA.Bamboo.service.ArticleService;
+import com.OSA.Bamboo.web.dto.OrderedArticleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class OrderedArtDtoToOrderedArt implements Converter<OrderedArticleDto, OrderedArticle> {
+public class DtoToOrderedArticle implements Converter<OrderedArticleDto, OrderedArticle> {
 
     @Autowired
     private ArticleService articleService;

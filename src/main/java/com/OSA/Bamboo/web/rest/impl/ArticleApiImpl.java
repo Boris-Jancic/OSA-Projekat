@@ -1,10 +1,10 @@
 package com.OSA.Bamboo.web.rest.impl;
 
-import com.OSA.Bamboo.dto.ArticleDto;
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.service.impl.JpaArticleService;
-import com.OSA.Bamboo.web.converter.ArticleDtoToArticle;
-import com.OSA.Bamboo.web.converter.ArticleToArticleDto;
+import com.OSA.Bamboo.web.converter.ArticleToDto;
+import com.OSA.Bamboo.web.converter.DtoToArticle;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.web.rest.ArticleApi;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class ArticleApiImpl implements ArticleApi {
     private JpaArticleService articleService;
 
     @Autowired
-    private ArticleToArticleDto toDto;
+    private ArticleToDto toDto;
     @Autowired
-    private ArticleDtoToArticle toEntity;
+    private DtoToArticle toEntity;
 
     @SneakyThrows
     @Override
@@ -36,8 +36,8 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity getAllArticles() {
-        List<Article> articles = articleService.getAll();
+    public ResponseEntity getAllArticles() throws IOException {
+        List<ArticleDto> articles = toDto.convert(articleService.getAll());
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
@@ -53,8 +53,8 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity updateArticle(Article article) {
-        System.out.println(article);
+    public ResponseEntity updateArticle(ArticleDto dto) {
+        Article article = toEntity.convert(dto);
         if (article != null) {
             articleService.save(article);
             return new ResponseEntity<>("Updated article" + article, HttpStatus.OK);
@@ -65,6 +65,6 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity<?> deleteArticle(Long id) {
         articleService.delete(id);
-        return new ResponseEntity<>("Article deleted", HttpStatus.NO_CONTENT); // TODO: vrati 204
+        return new ResponseEntity<>("Article deleted", HttpStatus.NO_CONTENT);
     }
 }
