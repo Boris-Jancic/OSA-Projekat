@@ -40,21 +40,22 @@ public class JpaArticleService implements ArticleService {
 
     @Override
     public List<ArticleDto> getSellerArticles(Long id) throws IOException {
-        List<Article> articles = articleRepo.getSellerArticles(id);
         List<Discount> discounts = discountRepo.getActualDiscounts(id);
+        List<ArticleDto> articlesDto = toDto.convert(articleRepo.getSellerArticles(id));
 
-        for (Article article : articles) {
+        for (ArticleDto article : articlesDto) {
             double articlePrice = article.getPrice();
             double discountPrice = 0;
             for (Discount discount : discounts) {
                 if (discount.getArticle().getId() == article.getId()) {
                     discountPrice = articlePrice - articlePrice * (discount.getDiscountPercent() * 0.01);
                     article.setPrice(discountPrice);
+                    article.setOnDiscount(true);
                 }
             }
         }
 
-        return toDto.convert(articles);
+        return articlesDto;
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {

@@ -87,6 +87,8 @@ export default function BrowseLayout() {
             alert("Please add something to your cart")
     }
 
+    console.log(articles)
+
     return (
         <div className={classes.root} class="card-view">
 
@@ -117,6 +119,9 @@ export default function BrowseLayout() {
                                     {elem.name}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="h2">
+                                    {elem.onDiscount === true && (
+                                        <h6 style={{color: "red"}}>DISCOUNT</h6>
+                                    )}
                                     <b> {elem.price} €</b>
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p">

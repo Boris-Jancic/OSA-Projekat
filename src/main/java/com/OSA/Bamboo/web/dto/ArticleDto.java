@@ -22,4 +22,6 @@ public class ArticleDto {
     private String description;
     @NotNull
     private Double price;
+    @NotNull
+    private boolean onDiscount;
 }
