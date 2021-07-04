@@ -72,6 +72,15 @@ class OrderTable extends Component {
 
         this.setState({open: false})
 
+        if (comment === "" || grade === "") {
+            alert("Please fill out all blank fields")
+            return
+        }
+        if (grade <= 0 || grade > 5) {
+            alert("The grade must be betweet 1 and 5 !")
+            return
+        }
+
         for (let i = 0; i < this.state.orders.length; i++) {
             if (this.state.orders[i].delivered === true) {
                 this.state.orders.splice(i, 1)
