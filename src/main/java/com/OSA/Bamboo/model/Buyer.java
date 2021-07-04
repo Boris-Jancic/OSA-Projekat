@@ -1,12 +1,11 @@
 package com.OSA.Bamboo.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 public class Buyer {

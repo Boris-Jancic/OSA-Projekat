@@ -1,39 +1,24 @@
 package com.OSA.Bamboo.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 public class OrderedArticle {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(length = 10)
     private Long id;
 
-    @NotBlank(message = "HourlyRate is mandatory")
-    private LocalDate hourlyRate;
+    private int quanity;
 
-    @NotBlank(message = "Delivered is mandatory")
-    private boolean delivered;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "article_id")
+    private Article article;
 
-    @NotBlank(message = "Grade is mandatory")
-    private int grade;
-
-    @NotBlank(message = "Comment is mandatory")
-    private String comment;
-
-    @NotBlank(message = "Anonymous comment is mandatory")
-    private boolean anonymousComment;
-
-    @NotBlank(message = "Archived comment is mandatory")
-    private boolean archivedComment;
+    private Long orderId;
 }
-

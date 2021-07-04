@@ -1,11 +1,11 @@
-import UserTable from "../components/UserTable";
+import {UserTable} from "../components/tables/UserTable";
 
 const AdminLayout = () => {
 
     return (
         <>
             <div className="content-box">
-                <UserTable />
+                <UserTable/>
             </div>
         </>
     )

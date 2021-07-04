@@ -7,30 +7,39 @@ export const UserService = {
     editUser,
     getUser,
     getUsers,
+    getSellers,
+    getSellerGrade,
     changePassword
 };
 
-async function registerBuyer() {
-    return await AxiosClient.post("http://localhost:8080/buyer/register");
+async function registerBuyer(buyer) {
+    return await AxiosClient.post("http://localhost:8080/users/buyer/register", buyer);
 }
 
-async function registerSeller() {
-    return await AxiosClient.post("http://localhost:8080/seller/register");
+async function registerSeller(seller) {
+    return await AxiosClient.post("http://localhost:8080/users/seller/register", seller);
 }
 
 async function getUser(username) {
-    return await AxiosClient.get("http://localhost:8080/user/" + username);
+    return await AxiosClient.get("http://localhost:8080/users/" + username);
 }
 
 async function getUsers() {
-    return await AxiosClient.get("http://localhost:8080/users");
+    return await AxiosClient.get("http://localhost:8080/users/all");
+}
+
+async function getSellers() {
+    return await AxiosClient.get("http://localhost:8080/users/sellers");
+}
+
+async function getSellerGrade(seller) {
+    return await AxiosClient.get("http://localhost:8080/orders/seller/grade/" + seller);
 }
 
 async function editUser(user) {
-    return await AxiosClient.put("http://localhost:8080/user/edit", user);
+    return await AxiosClient.put("http://localhost:8080/users/edit", user);
 }
 
 async function changePassword(userPasswordChange) {
-    console.log(userPasswordChange)
-    return await AxiosClient.put("http://localhost:8080/user/changePass/" + userPasswordChange.username, userPasswordChange);
+    return await AxiosClient.put("http://localhost:8080/users/changePass/" + userPasswordChange.username, userPasswordChange);
 }

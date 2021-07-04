@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Long> {
     @Query(value = "SELECT u FROM User u WHERE u.username = ?1")
@@ -16,4 +17,10 @@ public interface UserRepo extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT u FROM User u WHERE u.role = 'SELLER' or u.role = 'BUYER'")
     List<User> getAllUsersExeptAdmins();
+
+    @Query(value = "SELECT u FROM User u WHERE u.role = 'SELLER'")
+    List<User> getSellers();
+
+    @Query("SELECT u FROM User u WHERE u.username = ?1")
+    Optional<User> checkIfUserExists(String username);
 }

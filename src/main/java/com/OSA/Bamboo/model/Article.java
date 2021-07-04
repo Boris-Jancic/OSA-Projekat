@@ -1,6 +1,7 @@
 package com.OSA.Bamboo.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(length = 10)
+    @Column(name = "article_id", unique = true, nullable = false)
     private Long id;
 
     private String name;

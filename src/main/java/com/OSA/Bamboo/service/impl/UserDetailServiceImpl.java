@@ -25,9 +25,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         User user = userService.findByUsername(username);
 
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("There is no user with username " + username);
-        }else{
+        } else {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             String role = "ROLE_" + user.getRole().toString();
             grantedAuthorities.add(new SimpleGrantedAuthority(role));

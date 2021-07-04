@@ -1,38 +1,48 @@
 package com.OSA.Bamboo.web.rest;
 
-import com.OSA.Bamboo.model.Article;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
+@CrossOrigin
+@RequestMapping("/articles")
 public interface ArticleApi {
 
-    @RequestMapping(value = "/addArticle",
+    @PreAuthorize("hasRole('SELLER')")
+    @RequestMapping(value = "/add",
             produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
-    ResponseEntity<?> addArticle(@RequestParam("imageFile")MultipartFile file,
-                                        @RequestParam("name") String name,
-                                        @RequestParam("description") String description,
-                                        @RequestParam("price") String price,
-                                        @RequestParam("sellerId") Long sellerId);
+    ResponseEntity<?> addArticle(@RequestParam("base64Image") String base64Image,
+                                 @RequestParam("imgName") String imgName,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("price") String price,
+                                 @RequestParam("sellerId") Long sellerId);
 
-    @GetMapping(value = "/allArticles",
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    ResponseEntity getAllArticles() throws IOException;
+
+    @GetMapping(value = "/seller/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity getAllArticles();
+    ResponseEntity getSellerArticles(@PathVariable("id") Long id) throws IOException;
 
-    @GetMapping(value = "/getArticle/{id}",
+    @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity getArticle(@PathVariable("id") Long id);
 
-    @PutMapping(value = "/updateArticle",
+    @PreAuthorize("hasRole('SELLER')")
+    @PutMapping(value = "/update",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity updateArticle(@Valid @RequestBody Article article);
+    ResponseEntity updateArticle(@Valid @RequestBody ArticleDto article);
 
-    @DeleteMapping(value = "/deleteArticle/{id}")
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping(value = "/delete/{id}")
     ResponseEntity<?> deleteArticle(@PathVariable("id") Long id);
 
 }

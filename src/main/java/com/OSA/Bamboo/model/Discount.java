@@ -1,37 +1,33 @@
 package com.OSA.Bamboo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.util.Date;
 
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
-public class   Discount {
+public class Discount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Discount percent is required")
     private int discountPercent;
 
-    @NotBlank(message = "From date is required")
-    private LocalDate fromDate;
+    private Date fromDate;
 
-    @NotBlank(message = "Till date is required")
-    private LocalDate tillDate;
+    private Date tillDate;
 
-    @NotBlank(message = "Discount reason is required")
     private String description;
+
+    @OneToOne
+    @JoinColumn(name = "article_id")
+    private Article article;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User seller;
 }

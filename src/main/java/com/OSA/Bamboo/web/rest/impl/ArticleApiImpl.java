@@ -2,63 +2,48 @@ package com.OSA.Bamboo.web.rest.impl;
 
 import com.OSA.Bamboo.model.Article;
 import com.OSA.Bamboo.service.impl.JpaArticleService;
-import com.OSA.Bamboo.web.converter.ArticleDtoToArticle;
-import com.OSA.Bamboo.web.converter.converter.ArticleToArticleDto;
+import com.OSA.Bamboo.web.converter.ArticleToDto;
+import com.OSA.Bamboo.web.converter.DtoToArticle;
+import com.OSA.Bamboo.web.dto.ArticleDto;
 import com.OSA.Bamboo.web.rest.ArticleApi;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Component
+@Slf4j
 public class ArticleApiImpl implements ArticleApi {
-
-    private final String imageDirectory = System.getProperty("user.dir") + "/images/";
 
     @Autowired
     private JpaArticleService articleService;
 
     @Autowired
-    private ArticleToArticleDto toDto;
+    private ArticleToDto toDto;
     @Autowired
-    private ArticleDtoToArticle toEntity;
+    private DtoToArticle toEntity;
 
+    @SneakyThrows
     @Override
-    public ResponseEntity<?> addArticle(MultipartFile file, String name, String description, String price, Long sellerId) {
-
-        makeDirectoryIfNotExist(imageDirectory);
-        Path fileNamePath = Paths.get(imageDirectory, file.getName());
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        System.out.println(sellerId);
-        Article article = new Article(name, description, Double.parseDouble(price), file.getName(), sellerId);
-        System.out.println(article);
-        try {
-            articleService.save(article);
-            Files.write(fileNamePath, file.getBytes());
-            return new ResponseEntity<>(article, HttpStatus.CREATED);
-        } catch (IOException ex) {
-            return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> addArticle(String base64Image, String imgName, String name, String description, String price, Long sellerId) {
+        Article article = articleService.saveNewArticle(base64Image, imgName, name, description, price, sellerId);
+        return new ResponseEntity<>(article, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity getAllArticles() {
-        List<Article> articles = articleService.getAll();
+    public ResponseEntity getAllArticles() throws IOException {
+        List<ArticleDto> articles = toDto.convert(articleService.getAll());
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getSellerArticles(Long id) throws IOException {
+        List<ArticleDto> articles = articleService.getSellerArticles(id);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
@@ -68,8 +53,8 @@ public class ArticleApiImpl implements ArticleApi {
     }
 
     @Override
-    public ResponseEntity updateArticle(Article article) {
-        System.out.println(article);
+    public ResponseEntity updateArticle(ArticleDto dto) {
+        Article article = toEntity.convert(dto);
         if (article != null) {
             articleService.save(article);
             return new ResponseEntity<>("Updated article" + article, HttpStatus.OK);
@@ -80,13 +65,6 @@ public class ArticleApiImpl implements ArticleApi {
     @Override
     public ResponseEntity<?> deleteArticle(Long id) {
         articleService.delete(id);
-        return new ResponseEntity<>("Article deleted", HttpStatus.OK);
-    }
-
-    private void makeDirectoryIfNotExist(String imageDirectory) {
-        File directory = new File(imageDirectory);
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
+        return new ResponseEntity<>("Article deleted", HttpStatus.NO_CONTENT);
     }
 }

@@ -2,6 +2,7 @@ import AxiosClient from "./clients/AxiosClient";
 
 export const ArticleService = {
     addArticle,
+    getArticle,
     getArticles,
     editArticle,
     deleteArticle,
@@ -9,21 +10,25 @@ export const ArticleService = {
 };
 
 async function addArticle(article) {
-    return await AxiosClient.post("http://localhost:8080/addArticle", article);
+    return await AxiosClient.post("http://localhost:8080/articles/add", article);
+}
+
+async function getArticle(id) {
+    return await AxiosClient.get("http://localhost:8080/articles/" + id);
 }
 
 async function getArticles() {
-    return await AxiosClient.get("http://localhost:8080/allArticles");
+    return await AxiosClient.get("http://localhost:8080/articles");
 }
 
 async function editArticle(article) {
-    return await AxiosClient.put("http://localhost:8080/editArticle", article);
+    return await AxiosClient.put("http://localhost:8080/articles/update", article);
 }
 
 async function deleteArticle(id) {
-    return await AxiosClient.delete('http://localhost:8080/deleteArticle/' + id);
+    return await AxiosClient.delete('http://localhost:8080/articles/delete/' + id);
 }
 
-async function getSellerArticles() {
-    // return await AxiosClient.get("delete/:id");
+async function getSellerArticles(id) {
+    return await AxiosClient.get("http://localhost:8080/articles/seller/" + id);
 }

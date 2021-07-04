@@ -25,7 +25,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest)request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         String authToken = httpRequest.getHeader("Authorization");
         if (authToken != null && authToken.length() > 7) {
             authToken = authToken.substring(7);
@@ -35,7 +35,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (this.tokenUtils.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, (Object)null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, (Object) null, userDetails.getAuthorities());
                 authentication.setDetails((new WebAuthenticationDetailsSource()).buildDetails(httpRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
